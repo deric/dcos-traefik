@@ -174,7 +174,7 @@ fi
 
 if [ "X${TRAEFIK_ADMIN_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_ADMIN_CFG="\
-address = \":${TRAEFIK_ADMIN_PORT}\"
+address = \"${TRAEFIK_ADMIN_ADDRESS}:${TRAEFIK_ADMIN_PORT}\"
 ReadOnly = ${TRAEFIK_ADMIN_READ_ONLY}
 [web.statistics]
 RecentErrors = ${TRAEFIK_ADMIN_STATISTICS}
