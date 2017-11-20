@@ -25,6 +25,7 @@ function main {
     set -ex
   fi
   generate_config
+  chmod +x traefik_linux-amd64
 }
 
 function generate_config {
