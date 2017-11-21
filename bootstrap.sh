@@ -25,17 +25,19 @@ function main {
     set -ex
   fi
   generate_config
-  chmod +x traefik_linux-amd64
+  if [ -f traefik_linux-amd64 ]; then
+    chmod +x traefik_linux-amd64
+  fi
 }
 
 function generate_config {
   TRAEFIK_HTTP_COMPRESSION=${TRAEFIK_HTTP_COMPRESSION:-"true"}
   TRAEFIK_HTTPS_COMPRESSION=${TRAEFIK_HTTPS_COMPRESSION:-"true"}
   TRAEFIK_HTTP_ADDRESS=${TRAEFIK_HTTP_ADDRESS:-""}
-  TRAEFIK_HTTP_PORT=${TRAEFIK_HTTP_PORT:-"8080"}
+  TRAEFIK_HTTP_PORT=${TRAEFIK_HTTP_PORT:-"80"}
   TRAEFIK_HTTPS_ENABLE=${TRAEFIK_HTTPS_ENABLE:-"false"}
   TRAEFIK_HTTPS_ADDRESS=${TRAEFIK_HTTP_ADDRESS:-""}
-  TRAEFIK_HTTPS_PORT=${TRAEFIK_HTTPS_PORT:-"8443"}
+  TRAEFIK_HTTPS_PORT=${TRAEFIK_HTTPS_PORT:-"443"}
   TRAEFIK_ADMIN_ENABLE=${TRAEFIK_ADMIN_ENABLE:-"false"}
   TRAEFIK_ADMIN_PORT=${TRAEFIK_ADMIN_PORT:-"8000"}
   TRAEFIK_DEBUG=${TRAEFIK_DEBUG:="false"}
@@ -236,6 +238,34 @@ exposedByDefault = ${TRAEFIK_MARATHON_EXPOSE}
 "
 fi
 
+local opts=""
+  if [ ! -z "${TRAEFIK_ENTRYPOINTS_OPTS}" ]; then
+    opts+="${TRAEFIK_ENTRYPOINTS_OPTS}"
+  fi
+  if [ ! -z "${TRAEFIK_WEB}" ]; then
+    opts+="${TRAEFIK_WEB}"
+  fi
+  if [ ! -z "${TRAEFIK_ADMIN_CFG}" ]; then
+    opts+="${TRAEFIK_ADMIN_CFG}"
+  fi
+  if [ ! -z "${TRAEFIK_PROMETHEUS_OPTS}" ]; then
+    opts+="${TRAEFIK_PROMETHEUS_OPTS}"
+  fi
+  if [ ! -z "${TRAEFIK_RANCHER_OPTS}" ]; then
+    opts+="${TRAEFIK_RANCHER_OPTS}"
+  fi
+  if [ ! -z "${TRAEFIK_FILE_OPTS}" ]; then
+    opts+="${TRAEFIK_FILE_OPTS}"
+  fi
+  if [ ! -z "${TRAEFIK_ACME_CFG}" ]; then
+    opts+="${TRAEFIK_ACME_CFG}"
+  fi
+  if [ ! -z "${TRAEFIK_K8S_OPTS}" ]; then
+    opts+="${TRAEFIK_K8S_OPTS}"
+  fi
+  if [ ! -z "${TRAEFIK_MARATHON_OPTS}" ]; then
+    opts+="${TRAEFIK_MARATHON_OPTS}"
+  fi
 
 
 cat << EOF > ./traefik.toml
@@ -245,15 +275,7 @@ logLevel = "${TRAEFIK_LOG_LEVEL}"
 InsecureSkipVerify = ${TRAEFIK_INSECURE_SKIP}
 defaultEntryPoints = [${TRAEFIK_ENTRYPOINTS}]
 [entryPoints]
-${TRAEFIK_ENTRYPOINTS_OPTS}
-${TRAEFIK_WEB}
-${TRAEFIK_ADMIN_CFG}
-${TRAEFIK_PROMETHEUS_OPTS}
-${TRAEFIK_RANCHER_OPTS}
-${TRAEFIK_FILE_OPTS}
-${TRAEFIK_ACME_CFG}
-${TRAEFIK_K8S_OPTS}
-${TRAEFIK_MARATHON_OPTS}
+${opts}
 EOF
 }
 
