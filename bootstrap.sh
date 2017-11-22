@@ -279,7 +279,7 @@ marathonLBCompatibility = ${TRAEFIK_MARATHONLB_COMPATIBILITY}
 #
 # Optional
 #
-# dcosToken = "xxxxxx"
+# dcosToken = \"xxxxxx\"
 
 # Override DialerTimeout.
 # Amount of time to allow the Marathon provider to wait to open a TCP connection
@@ -289,9 +289,9 @@ marathonLBCompatibility = ${TRAEFIK_MARATHONLB_COMPATIBILITY}
 # If no units are provided, the value is parsed assuming seconds.
 #
 # Optional
-# Default: "60s"
+# Default: \"60s\"
 #
-dialerTimeout = "${TRAEFIK_MARATHON_DIALER_TIMEOUT}"
+dialerTimeout = \"${TRAEFIK_MARATHON_DIALER_TIMEOUT}\"
 
 # Set the TCP Keep Alive interval for the Marathon HTTP Client.
 # Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
@@ -299,9 +299,9 @@ dialerTimeout = "${TRAEFIK_MARATHON_DIALER_TIMEOUT}"
 # If no units are provided, the value is parsed assuming seconds.
 #
 # Optional
-# Default: "10s"
+# Default: \"10s\"
 #
-keepAlive = "${TRAEFIK_MARATHON_KEEP_ALIVE}"
+keepAlive = \"${TRAEFIK_MARATHON_KEEP_ALIVE}\"
 
 # By default, a task's IP address (as returned by the Marathon API) is used as
 # backend server if an IP-per-task configuration can be found; otherwise, the
