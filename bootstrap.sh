@@ -68,8 +68,7 @@ function generate_config {
   TRAEFIK_RANCHER_OPTS=${TRAEFIK_RANCHER_OPTS:-""}
   TRAEFIK_RANCHER_PREFIX=${TRAEFIK_RANCHER_PREFIX:-"/2017-11-11"}
   TRAEFIK_FILE_NAME=${TRAEFIK_FILE_NAME:-"rules.toml"}
-  TRAEFIK_FILE_ENABLE=${TRAEFIK_FILE_ENABLE:="false"}
-  TRAEFIK_FILE_OPTS=${TRAEFIK_FILE_OPTS:-""}
+  TRAEFIK_FILE_WATCH=${TRAEFIK_FILE_WATCH:="true"}
   TRAEFIK_WEB=${TRAEFIK_WEB:-""}
   CATTLE_URL=${CATTLE_URL:-""}
   CATTLE_ACCESS_KEY=${CATTLE_ACCESS_KEY:-""}
@@ -81,6 +80,11 @@ function generate_config {
   TRAEFIK_MARATHON_DOMAIN=${TRAEFIK_MARATHON_DOMAIN:-"marathon.localhost"}
   TRAEFIK_MARATHON_OPTS=${TRAEFIK_MARATHON_OPTS:-""}
   TRAEFIK_MARATHON_EXPOSE=${TRAEFIK_MARATHON_EXPOSE:-"true"}
+  TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS=${TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS:-"false"}
+  TRAEFIK_MARATHON_DIALER_TIMEOUT=${TRAEFIK_MARATHON_DIALER_TIMEOUT:-"60s"}
+  TRAEFIK_MARATHON_KEEP_ALIVE=${TRAEFIK_MARATHON_KEEP_ALIVE:-"10s"}
+  TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME=${TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME:-"false"}
+  TRAEFIK_MARATHON_RESPECT_READINESS_CHECKS=${TRAEFIK_MARATHON_RESPECT_READINESS_CHECKS:-"false"}
 
 TRAEFIK_ENTRYPOINTS_HTTP="\
   [entryPoints.http]
@@ -198,11 +202,11 @@ buckets=${TRAEFIK_PROMETHEUS_BUCKETS}
 "
 fi
 
-if [ "X${TRAEFIK_FILE_ENABLE}" == "Xtrue" ]; then
+if [ -f "${TRAEFIK_FILE_NAME}" ]; then
     TRAEFIK_FILE_OPTS="\
 [file]
 filename = \"${TRAEFIK_FILE_NAME}\"
-watch = true
+watch = ${TRAEFIK_FILE_WATCH}
 "
 fi
 
@@ -223,18 +227,97 @@ watch = ${TRAEFIK_MARATHON_WATCH}
 #
 domain = \"${TRAEFIK_MARATHON_DOMAIN}\"
 
-# Enable compatibility with marathon-lb labels.
-#
-# Optional
-# Default: false
-marathonLBCompatibility = ${TRAEFIK_MARATHONLB_COMPATIBILITY}
-
 # Expose Marathon apps by default in Traefik.
 #
 # Optional
 # Default: true
 #
 exposedByDefault = ${TRAEFIK_MARATHON_EXPOSE}
+
+# Convert Marathon groups to subdomains.
+# Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
+# with groupsAsSubDomains enabled: /foo/bar/myapp => myapp.bar.foo.{defaultDomain}
+#
+# Optional
+# Default: false
+#
+groupsAsSubDomains = ${TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS}
+
+# Enable compatibility with marathon-lb labels.
+#
+# Optional
+# Default: false
+#
+marathonLBCompatibility = ${TRAEFIK_MARATHONLB_COMPATIBILITY}
+
+# Enable Marathon basic authentication.
+#
+# Optional
+#
+#    [marathon.basic]
+#    httpBasicAuthUser = \"foo\"
+#    httpBasicPassword = \"bar\"
+
+# TLS client configuration. https://golang.org/pkg/crypto/tls/#Config
+#
+# Optional
+#
+#    [marathon.TLS]
+#    CA = \"/etc/ssl/ca.crt\"
+#    Cert = \"/etc/ssl/marathon.cert\"
+#    Key = \"/etc/ssl/marathon.key\"
+#    InsecureSkipVerify = true
+
+# DCOSToken for DCOS environment.
+# This will override the Authorization header.
+#
+# Optional
+#
+# dcosToken = "xxxxxx"
+
+# Override DialerTimeout.
+# Amount of time to allow the Marathon provider to wait to open a TCP connection
+# to a Marathon master.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+# values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+#
+# Optional
+# Default: "60s"
+#
+dialerTimeout = "${TRAEFIK_MARATHON_DIALER_TIMEOUT}"
+
+# Set the TCP Keep Alive interval for the Marathon HTTP Client.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+# values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+#
+# Optional
+# Default: "10s"
+#
+keepAlive = "${TRAEFIK_MARATHON_KEEP_ALIVE}"
+
+# By default, a task's IP address (as returned by the Marathon API) is used as
+# backend server if an IP-per-task configuration can be found; otherwise, the
+# name of the host running the task is used.
+# The latter behavior can be enforced by enabling this switch.
+#
+# Optional
+# Default: false
+#
+forceTaskHostname = ${TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME}
+
+# Applications may define readiness checks which are probed by Marathon during
+# deployments periodically and the results exposed via the API.
+# Enabling the following parameter causes Traefik to filter out tasks
+# whose readiness checks have not succeeded.
+# Note that the checks are only valid at deployment times.
+# See the Marathon guide for details.
+#
+# Optional
+# Default: false
+#
+respectReadinessChecks = ${TRAEFIK_MARATHON_RESPECT_READINESS_CHECKS}
 "
 fi
 
@@ -274,6 +357,7 @@ debug = ${TRAEFIK_DEBUG}
 logLevel = "${TRAEFIK_LOG_LEVEL}"
 InsecureSkipVerify = ${TRAEFIK_INSECURE_SKIP}
 defaultEntryPoints = [${TRAEFIK_ENTRYPOINTS}]
+
 [entryPoints]
 ${opts}
 EOF
