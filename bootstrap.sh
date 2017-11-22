@@ -175,13 +175,16 @@ fi
 
 if [ "X${TRAEFIK_ADMIN_ENABLE}" == "Xtrue" ] || [ "X${TRAEFIK_PROMETHEUS_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_WEB="\
-[web]"
+
+[web]
+"
 fi
 
 if [ "X${TRAEFIK_ADMIN_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_ADMIN_CFG="\
 address = \"${TRAEFIK_ADMIN_ADDRESS}:${TRAEFIK_ADMIN_PORT}\"
 ReadOnly = ${TRAEFIK_ADMIN_READ_ONLY}
+
 [web.statistics]
 RecentErrors = ${TRAEFIK_ADMIN_STATISTICS}
 "
@@ -197,6 +200,7 @@ fi
 
 if [ "X${TRAEFIK_PROMETHEUS_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_PROMETHEUS_OPTS="\
+
 [web.metrics.prometheus]
 buckets=${TRAEFIK_PROMETHEUS_BUCKETS}
 "
@@ -204,6 +208,7 @@ fi
 
 if [ -f "${TRAEFIK_FILE_NAME}" ]; then
     TRAEFIK_FILE_OPTS="\
+
 [file]
 filename = \"${TRAEFIK_FILE_NAME}\"
 watch = ${TRAEFIK_FILE_WATCH}
@@ -212,6 +217,7 @@ fi
 
 if [ "X${TRAEFIK_MARATHON_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_MARATHON_OPTS="\
+
 [marathon]
 # Marathon server endpoint.
 # You can also specify multiple endpoint for Marathon:
