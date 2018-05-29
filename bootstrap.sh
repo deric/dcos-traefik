@@ -204,7 +204,7 @@ if [ "X${TRAEFIK_PROMETHEUS_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_PROMETHEUS_OPTS="\
 [metrics]
   [metrics.prometheus]
-  entryPoint = "${TRAEFIK_PROMETHEUS_ENTRYPOINT}"
+  entryPoint = \"${TRAEFIK_PROMETHEUS_ENTRYPOINT}\"
   # Buckets for latency metrics
   #
   # Optional
