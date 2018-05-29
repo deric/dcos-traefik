@@ -57,6 +57,7 @@ function generate_config {
   TRAEFIK_K8S_OPTS=${TRAEFIK_K8S_OPTS:-""}
   TRAEFIK_PROMETHEUS_ENABLE=${TRAEFIK_PROMETHEUS_ENABLE:-"false"}
   TRAEFIK_PROMETHEUS_OPTS=${TRAEFIK_PROMETHEUS_OPTS:-""}
+  TRAEFIK_PROMETHEUS_ENTRYPOINT=${TRAEFIK_PROMETHEUS_ENTRYPOINT:-"traefik"}
   TRAEFIK_PROMETHEUS_BUCKETS=${TRAEFIK_PROMETHEUS_BUCKETS:-"[0.1,0.3,1.2,5.0]"}
   TRAEFIK_RANCHER_ENABLE=${TRAEFIK_RANCHER_ENABLE:-"false"}
   TRAEFIK_RANCHER_REFRESH=${TRAEFIK_RANCHER_REFRESH:-15}
@@ -173,7 +174,7 @@ Prefix = \"${TRAEFIK_RANCHER_PREFIX}\"
     fi
 fi
 
-if [ "X${TRAEFIK_ADMIN_ENABLE}" == "Xtrue" ] || [ "X${TRAEFIK_PROMETHEUS_ENABLE}" == "Xtrue" ]; then
+if [ "X${TRAEFIK_ADMIN_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_WEB="\
 
 [web]
@@ -198,11 +199,18 @@ usersFile = \"${SERVICE_HOME}/.htpasswd\"
     fi
 fi
 
+# Metrics definition
 if [ "X${TRAEFIK_PROMETHEUS_ENABLE}" == "Xtrue" ]; then
     TRAEFIK_PROMETHEUS_OPTS="\
-
-[web.metrics.prometheus]
-buckets=${TRAEFIK_PROMETHEUS_BUCKETS}
+[metrics]
+  [metrics.prometheus]
+  entryPoint = "${TRAEFIK_PROMETHEUS_ENTRYPOINT}"
+  # Buckets for latency metrics
+  #
+  # Optional
+  # Default: [0.1, 0.3, 1.2, 5]
+  #
+  buckets=${TRAEFIK_PROMETHEUS_BUCKETS}
 "
 fi
 
