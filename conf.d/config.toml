@@ -1,0 +1,17 @@
+[template]
+src = "traefik.tmpl.toml"
+dest = "traefik.toml"
+keys = [
+    "/traefik/debug",
+    "/traefik/insecure/skip",
+    "/traefik/log/level",
+    "/traefik/http/address",
+    "/traefik/http/compression",
+    "/traefik/http/port",
+    "/traefik/https/address",
+    "/traefik/https/enable",
+    "/traefik/https/compression",
+    "/traefik/https/port",
+    "/traefik/marathon/enable",
+    "/traefik/marathon/endpoint",
+]

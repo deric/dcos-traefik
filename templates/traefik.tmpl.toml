@@ -1,0 +1,149 @@
+# Generated traefik.toml by confd {{datetime}}
+debug = {{getv "/traefik/debug" "false"}}
+logLevel = "{{getv "/traefik/log/level" "INFO"}}"
+InsecureSkipVerify = {{getv "/traefik/insecure/skip" "false"}}
+defaultEntryPoints = ["http"]
+
+
+[entryPoints]
+  [entryPoints.http]
+  address = "{{getv "/traefik/http/address" ""}}:{{getv "/traefik/http/port" "80"}}"
+  compress = {{getv "/traefik/http/compress" "true"}}
+{{if exists "/traefik/https/enable"}}
+  [entryPoints.https]
+  address = "{{getv "/traefik/https/address" ""}}:{{getv "/traefik/https/port" "443"}}"
+  compress = {{getv "/traefik/https/compress" "true"}}
+{{end}}
+  [entryPoints.ping]
+  address = ":8082"
+
+  [entryPoints.api]
+  address = ":8083"
+
+[ping]
+entryPoint = "ping"
+
+[api]
+entryPoint = "api"
+
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  compress = true
+
+[web]
+address = ":8081"
+ReadOnly = false
+
+[web.statistics]
+RecentErrors = 10
+
+{{if exists "/traefik/marathon/enable"}}
+[marathon]
+# Marathon server endpoint.
+# You can also specify multiple endpoint for Marathon:
+# endpoint = "http://10.241.1.71:8080,10.241.1.72:8080,10.241.1.73:8080"
+#
+endpoint = "http://marathon.mesos:8080"
+watch = true
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on an application.
+#
+# Required
+#
+domain = "marathon.localhost"
+
+# Expose Marathon apps by default in Traefik.
+#
+# Optional
+# Default: true
+#
+exposedByDefault = true
+
+# Convert Marathon groups to subdomains.
+# Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
+# with groupsAsSubDomains enabled: /foo/bar/myapp => myapp.bar.foo.{defaultDomain}
+#
+# Optional
+# Default: false
+#
+groupsAsSubDomains = false
+
+# Enable compatibility with marathon-lb labels.
+#
+# Optional
+# Default: false
+#
+marathonLBCompatibility = false
+
+# Enable Marathon basic authentication.
+#
+# Optional
+#
+#    [marathon.basic]
+#    httpBasicAuthUser = "foo"
+#    httpBasicPassword = "bar"
+
+# TLS client configuration. https://golang.org/pkg/crypto/tls/#Config
+#
+# Optional
+#
+#    [marathon.TLS]
+#    CA = "/etc/ssl/ca.crt"
+#    Cert = "/etc/ssl/marathon.cert"
+#    Key = "/etc/ssl/marathon.key"
+#    InsecureSkipVerify = true
+
+# DCOSToken for DCOS environment.
+# This will override the Authorization header.
+#
+# Optional
+#
+# dcosToken = "xxxxxx"
+
+# Override DialerTimeout.
+# Amount of time to allow the Marathon provider to wait to open a TCP connection
+# to a Marathon master.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+# values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+#
+# Optional
+# Default: "60s"
+#
+dialerTimeout = "60s"
+
+# Set the TCP Keep Alive interval for the Marathon HTTP Client.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+# values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+#
+# Optional
+# Default: "10s"
+#
+keepAlive = "10s"
+
+# By default, a task's IP address (as returned by the Marathon API) is used as
+# backend server if an IP-per-task configuration can be found; otherwise, the
+# name of the host running the task is used.
+# The latter behavior can be enforced by enabling this switch.
+#
+# Optional
+# Default: false
+#
+forceTaskHostname = false
+
+# Applications may define readiness checks which are probed by Marathon during
+# deployments periodically and the results exposed via the API.
+# Enabling the following parameter causes Traefik to filter out tasks
+# whose readiness checks have not succeeded.
+# Note that the checks are only valid at deployment times.
+# See the Marathon guide for details.
+#
+# Optional
+# Default: false
+#
+respectReadinessChecks = false
+{{end}}
