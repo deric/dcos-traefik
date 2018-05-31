@@ -11,6 +11,8 @@ keys = [
   "/default/entrypoints",
   "/insecure/skip",
   "/log/level",
+  "/file/name",
+  "/file/watch",
   "/http/address",
   "/http/compression",
   "/http/port",

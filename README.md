@@ -39,11 +39,16 @@
  * `TRAEFIK_RANCHER_INTERVALPOLL` Default `false`
  * `TRAEFIK_RANCHER_OPTS`
  * `TRAEFIK_RANCHER_PREFIX` Default `/2017-11-11`
- * `TRAEFIK_FILE_NAME` Default `rules.toml`
- * `TRAEFIK_FILE_WATCH` Default `true`
  * `CATTLE_URL`
  * `CATTLE_ACCESS_KEY`
  * `CATTLE_SECRET_KEY`
+
+## Custom configuration
+
+Appends custom configuration to generated `treafik.toml` config.
+
+ * `TRAEFIK_FILE_NAME` Default `rules.toml`
+ * `TRAEFIK_FILE_WATCH` Default `true`
 
 
 ## Metrics

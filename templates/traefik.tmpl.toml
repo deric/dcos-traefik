@@ -144,8 +144,6 @@ forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
 #
 respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 {{end}}
-
-
 # Metrics definition
 [metrics]
 
@@ -166,4 +164,9 @@ respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
     # Default: [0.1, 0.3, 1.2, 5]
     #
     buckets = [{{getv "/prometheus/buckets" "0.1,0.3,1.2,5.0"}}]
+{{end}}
+{{if exists "/file/name"}}
+[file]
+filename = "{{getv "/file/name"}}"
+watch = {{getv "/file/watch" "true"}}
 {{end}}
