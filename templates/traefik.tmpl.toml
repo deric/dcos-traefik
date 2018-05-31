@@ -1,18 +1,18 @@
 # Generated traefik.toml by confd {{datetime}}
-debug = {{getv "/traefik/debug" "false"}}
-logLevel = "{{getv "/traefik/log/level" "INFO"}}"
-InsecureSkipVerify = {{getv "/traefik/insecure/skip" "false"}}
-defaultEntryPoints = ["http"]
+debug = {{getv "/debug" "false"}}
+logLevel = "{{getv "/log/level" "INFO"}}"
+InsecureSkipVerify = {{getv "/insecure/skip" "false"}}
+defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
 
 [entryPoints]
   [entryPoints.http]
-  address = "{{getv "/traefik/http/address" ""}}:{{getv "/traefik/http/port" "80"}}"
-  compress = {{getv "/traefik/http/compress" "true"}}
-{{if exists "/traefik/https/enable"}}
+  address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
+  compress = {{getv "/http/compress" "true"}}
+{{if exists "/https/enable"}}
   [entryPoints.https]
-  address = "{{getv "/traefik/https/address" ""}}:{{getv "/traefik/https/port" "443"}}"
-  compress = {{getv "/traefik/https/compress" "true"}}
+  address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
+  compress = {{getv "/https/compress" "true"}}
 {{end}}
   [entryPoints.ping]
   address = ":8082"
@@ -27,40 +27,28 @@ entryPoint = "ping"
 entryPoint = "api"
 
 
-[entryPoints]
-  [entryPoints.http]
-  address = ":80"
-  compress = true
-
-[web]
-address = ":8081"
-ReadOnly = false
-
-[web.statistics]
-RecentErrors = 10
-
-{{if exists "/traefik/marathon/enable"}}
+{{if exists "/marathon/enable"}}
 [marathon]
 # Marathon server endpoint.
 # You can also specify multiple endpoint for Marathon:
 # endpoint = "http://10.241.1.71:8080,10.241.1.72:8080,10.241.1.73:8080"
 #
-endpoint = "http://marathon.mesos:8080"
-watch = true
+endpoint = "{{getv "/marathon/endpoint" "http://marathon.mesos:8080"}}"
+watch = {{getv "/marathon/watch" "true"}}
 
 # Default domain used.
 # Can be overridden by setting the "traefik.domain" label on an application.
 #
 # Required
 #
-domain = "marathon.localhost"
+domain = "{{getv "/marathon/domain" "marathon.localhost"}}"
 
 # Expose Marathon apps by default in Traefik.
 #
 # Optional
 # Default: true
 #
-exposedByDefault = true
+exposedByDefault = {{getv "/marathon/expose" "true"}}
 
 # Convert Marathon groups to subdomains.
 # Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
@@ -69,14 +57,14 @@ exposedByDefault = true
 # Optional
 # Default: false
 #
-groupsAsSubDomains = false
+groupsAsSubDomains = {{getv "/marathon/groups/as/subdomains" "false"}}
 
 # Enable compatibility with marathon-lb labels.
 #
 # Optional
 # Default: false
 #
-marathonLBCompatibility = false
+marathonLBCompatibility = {{getv "/marathon/lb/compatibility" "false"}}
 
 # Enable Marathon basic authentication.
 #
@@ -96,13 +84,14 @@ marathonLBCompatibility = false
 #    Key = "/etc/ssl/marathon.key"
 #    InsecureSkipVerify = true
 
+{{if exists "/marathon/dcos/token"}}
 # DCOSToken for DCOS environment.
 # This will override the Authorization header.
 #
 # Optional
-#
-# dcosToken = "xxxxxx"
 
+dcosToken = "{{getv "/marathon/dcos/token"}}"
+{{end}}
 # Override DialerTimeout.
 # Amount of time to allow the Marathon provider to wait to open a TCP connection
 # to a Marathon master.
@@ -113,7 +102,7 @@ marathonLBCompatibility = false
 # Optional
 # Default: "60s"
 #
-dialerTimeout = "60s"
+dialerTimeout = "{{getv "/marathon/dialer/timeout" "60s"}}"
 
 # Set the TCP Keep Alive interval for the Marathon HTTP Client.
 # Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
@@ -123,7 +112,7 @@ dialerTimeout = "60s"
 # Optional
 # Default: "10s"
 #
-keepAlive = "10s"
+keepAlive = "{{getv "/marathon/keep/alive" "60s"}}"
 
 # By default, a task's IP address (as returned by the Marathon API) is used as
 # backend server if an IP-per-task configuration can be found; otherwise, the
@@ -133,7 +122,7 @@ keepAlive = "10s"
 # Optional
 # Default: false
 #
-forceTaskHostname = false
+forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
 
 # Applications may define readiness checks which are probed by Marathon during
 # deployments periodically and the results exposed via the API.
@@ -145,5 +134,5 @@ forceTaskHostname = false
 # Optional
 # Default: false
 #
-respectReadinessChecks = false
+respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 {{end}}
