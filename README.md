@@ -2,6 +2,8 @@
 
 [Traefik](https://traefik.io) package for DC/OS.
 
+`traefik.toml` configuration file is generated using `confd` template.
+
 ## Supported ENV variables
 
  * `TRAEFIK_HTTP_COMPRESSION` Default `true`
@@ -28,10 +30,6 @@
  * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
  * `TRAEFIK_K8S_ENABLE` Default `false`
  * `TRAEFIK_K8S_OPTS`
- * `TRAEFIK_PROMETHEUS_ENABLE` Default `false`
- * `TRAEFIK_PROMETHEUS_OPTS`
- * `TRAEFIK_PROMETHEUS_ENTRYPOINT` Default `traefik`
- * `TRAEFIK_PROMETHEUS_BUCKETS` Default `[0.1,0.3,1.2,5.0]`
  * `TRAEFIK_RANCHER_ENABLE` Default `false`
  * `TRAEFIK_RANCHER_REFRESH` Default `15`
  * `TRAEFIK_RANCHER_MODE` Default `api`
@@ -46,6 +44,20 @@
  * `CATTLE_URL`
  * `CATTLE_ACCESS_KEY`
  * `CATTLE_SECRET_KEY`
+
+
+## Metrics
+
+### Prometheus
+
+Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
+
+ * `TRAEFIK_PROMETHEUS_ENTRYPOINT` Default `traefik`
+ * `TRAEFIK_PROMETHEUS_BUCKETS` Comma separated values. Default `0.1,0.3,1.2,5.0`
+
+
+## Marathon
+
  * `TRAEFIK_MARATHON_ENABLE` Default `true`
  * `TRAEFIK_MARATHON_ENDPOINT` `http://marathon.mesos:8080`
  * `TRAEFIK_MARATHON_WATCH` Default `true`

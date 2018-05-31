@@ -33,4 +33,6 @@ keys = [
   "/ping/address",
   "/ping/enable",
   "/ping/port",
+  "/prometheus/buckets",
+  "/prometheus/entrypoint",
 ]

@@ -144,3 +144,26 @@ forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
 #
 respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 {{end}}
+
+
+# Metrics definition
+[metrics]
+
+{{if exists "/prometheus/entrypoint"}}
+  # To enable Traefik to export internal metrics to Prometheus
+  [metrics.prometheus]
+
+    # Name of the related entry point
+    #
+    # Optional
+    # Default: "traefik"
+    #
+    entryPoint = "{{getv "/prometheus/entrypoint"}}"
+
+    # Buckets for latency metrics
+    #
+    # Optional
+    # Default: [0.1, 0.3, 1.2, 5]
+    #
+    buckets = [{{getv "/prometheus/buckets" "0.1,0.3,1.2,5.0"}}]
+{{end}}
