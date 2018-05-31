@@ -4,28 +4,36 @@ logLevel = "{{getv "/log/level" "INFO"}}"
 InsecureSkipVerify = {{getv "/insecure/skip" "false"}}
 defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
-
 [entryPoints]
   [entryPoints.http]
   address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
   compress = {{getv "/http/compress" "true"}}
-{{if exists "/https/enable"}}
+{{if exists "/https/enable"}}{{if eq (getv "/https/enable") "true"}}
   [entryPoints.https]
   address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
   compress = {{getv "/https/compress" "true"}}
-{{end}}
+{{end}}{{end}}
+
+{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true"}}
   [entryPoints.ping]
-  address = ":8082"
+  address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
+{{end}}{{end}}
 
+{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true"}}
   [entryPoints.api]
-  address = ":8083"
+  address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
+  compress = {{getv "/api/compress" "false"}}
+{{end}}{{end}}
 
+{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true"}}
 [ping]
 entryPoint = "ping"
+{{end}}{{end}}
 
+{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true"}}
 [api]
 entryPoint = "api"
-
+{{end}}{{end}}
 
 {{if exists "/marathon/enable"}}
 [marathon]

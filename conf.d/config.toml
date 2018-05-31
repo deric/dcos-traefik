@@ -3,6 +3,10 @@ src = "traefik.tmpl.toml"
 dest = "traefik.toml"
 prefix = "traefik"
 keys = [
+  "/api/address",
+  "/api/enable",
+  "/api/compression",
+  "/api/port",
   "/debug",
   "/default/entrypoints",
   "/insecure/skip",
@@ -26,4 +30,7 @@ keys = [
   "/marathon/lb/compatibility",
   "/marathon/respect/readiness/checks",
   "/marathon/watch",
+  "/ping/address",
+  "/ping/enable",
+  "/ping/port",
 ]
