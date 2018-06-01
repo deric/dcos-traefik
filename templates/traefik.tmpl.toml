@@ -8,34 +8,33 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   [entryPoints.http]
   address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
   compress = {{getv "/http/compress" "true"}}
-{{if exists "/https/enable"}}{{if eq (getv "/https/enable") "true"}}
+{{if exists "/https/enable"}}{{if eq (getv "/https/enable") "true" -}}
   [entryPoints.https]
   address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
   compress = {{getv "/https/compress" "true"}}
-{{end}}{{end}}
-
-{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true"}}
+{{- end}}{{- end}}
+{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
   [entryPoints.ping]
   address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
-{{end}}{{end}}
+{{- end}}{{- end}}
 
-{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true"}}
+{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
   [entryPoints.api]
   address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
   compress = {{getv "/api/compress" "false"}}
-{{end}}{{end}}
+{{- end}}{{- end}}
 
-{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true"}}
+{{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
 [ping]
 entryPoint = "ping"
-{{end}}{{end}}
+{{- end}}{{- end}}
 
-{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true"}}
+{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
 [api]
 entryPoint = "api"
-{{end}}{{end}}
+{{- end}}{{- end}}
 
-{{if exists "/marathon/enable"}}
+{{if exists "/marathon/enable" -}}
 [marathon]
 # Marathon server endpoint.
 # You can also specify multiple endpoint for Marathon:
@@ -92,14 +91,14 @@ marathonLBCompatibility = {{getv "/marathon/lb/compatibility" "false"}}
 #    Key = "/etc/ssl/marathon.key"
 #    InsecureSkipVerify = true
 
-{{if exists "/marathon/dcos/token"}}
+{{if exists "/marathon/dcos/token" -}}
 # DCOSToken for DCOS environment.
 # This will override the Authorization header.
 #
 # Optional
 
 dcosToken = "{{getv "/marathon/dcos/token"}}"
-{{end}}
+{{- end}}
 # Override DialerTimeout.
 # Amount of time to allow the Marathon provider to wait to open a TCP connection
 # to a Marathon master.
@@ -143,11 +142,12 @@ forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
 # Default: false
 #
 respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
-{{end}}
+{{- end}}
+
 # Metrics definition
 [metrics]
 
-{{if exists "/prometheus/entrypoint"}}
+{{if exists "/prometheus/entrypoint" -}}
   # To enable Traefik to export internal metrics to Prometheus
   [metrics.prometheus]
 
@@ -164,14 +164,15 @@ respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
     # Default: [0.1, 0.3, 1.2, 5]
     #
     buckets = [{{getv "/prometheus/buckets" "0.1,0.3,1.2,5.0"}}]
-{{end}}
-{{if exists "/file/name"}}
+{{- end}}
+
+{{if exists "/file/name" -}}
 [file]
 filename = "{{getv "/file/name"}}"
 watch = {{getv "/file/watch" "true"}}
-{{end}}
+{{- end}}
 
-{{if exists "/rancher/enable"}}{{if eq (getv "/rancher/enable") "true"}}
+{{if exists "/rancher/enable"}}{{if eq (getv "/rancher/enable") "true" -}}
 [rancher]
 
 # Default domain used.
@@ -209,7 +210,7 @@ exposedByDefault = {{getv "/rancher/expose" "true"}}
 #
 enableServiceHealthFilter = {{getv "/rancher/healthcheck" "true"}}
 
-{{if exists "/rancher/filename"}}
+{{- if exists "/rancher/filename"}}
 #
 # Optional
 #
@@ -242,5 +243,5 @@ intervalPoll = {{getv "/rancher/intervalpoll" "false"}}
 #
 prefix = "{{getv "/rancher/prefix" "/latest"}}"
 
-{{end}}
-{{end}}{{end}}
+{{- end}}
+{{- end}}{{- end}}
