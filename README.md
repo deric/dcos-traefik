@@ -25,7 +25,7 @@ See [documetation](https://docs.traefik.io/user-guide/marathon/) for more detail
  * `TRAEFIK_INSECURE_SKIP` Default `false`
  * `TRAEFIK_LOG_LEVEL` Default `INFO`
  * `TRAEFIK_DEFAULT_ENTRYPOINTS` Entrypoints to be used by frontends that do not specify any entrypoint. Each frontend can specify its own entrypoints.
- * `TRAEFIK_GRACE_TIMEOUT` Duration to give active requests a chance to finish before Traefik stops.
+ * `TRAEFIK_GRACE_TIMEOUT` Duration to give active requests a chance to finish before Traefik stops (`10s`)
  * `TRAEFIK_HEALTHCHECK_INTERVAL` Set the default health check interval (`30s`).
  * `TRAEFIK_READ_TIMEOUT` The maximum duration for reading the entire request, including the body.
  * `TRAEFIK_WRITE_TIMEOUT` The maximum duration before timing out writes of the response.
@@ -40,7 +40,7 @@ By default the Traefik log is written to stdout in text format.
 
 * `TRAEFIK_ACCESS_LOG` Enable logging. Default `false`
 * `TRAEFIK_ACCESS_FORMAT` Logs format, e.g. `json`
-* `TRAEFIK_ACCESS_PATH` Path to logs
+* `TRAEFIK_ACCESS_PATH` Path to log files.
 
 ## Entrypoints
 
@@ -101,7 +101,7 @@ Appends custom configuration to generated `traefik.toml` config.
  * `TRAEFIK_MESOS_WATCH` Default `true`
  * `TRAEFIK_MESOS_EXPOSE` Expose Mesos apps by default in Traefik. Default `false`
  * `TRAEFIK_MESOS_FILENAME` Override default configuration template.
- * `TRAEFIK_MESOS_ZK_TIMEOUT` Zookeeper timeout (in seconds).
+ * `TRAEFIK_MESOS_ZK_TIMEOUT` ZooKeeper timeout (in seconds).
  * `TRAEFIK_MESOS_REFRESH` Polling interval (in seconds).
  * `TRAEFIK_MESOS_IP_SOURCES` IP sources (e.g. host, docker, mesos, netinfo).
  * `TRAEFIK_MESOS_TIMEOUT` HTTP Timeout (in seconds).
