@@ -12,6 +12,7 @@
   - Removed deprecated `TRAEFIK_ACME_ONDEMAND`
   - Added Mesos provider
   - Improved Kubernetess support
+  - Added Metrics support (exporting to DataDog, InfluxDB, StatsD)
 
 ## v1.0.0
  - Initial release

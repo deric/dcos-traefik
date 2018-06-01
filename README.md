@@ -123,9 +123,26 @@ Appends custom configuration to generated `traefik.toml` config.
 
 ## Metrics
 
+* `TRAEFIK_STATISTICS_RECENT_ERRORS` Number of recent errors logged. Default `10`.
+
+### DataDog
+
+* `TRAEFIK_DATADOG_ADDRESS` Enables sending metrics to DataDog, e.g. `localhost:8125`
+* `TRAEFIK_DATADOG_PUSHINTERVAL` Default `10s`
+
+### InfluxDB
+
+* `TRAEFIK_INFLUXDB_ADDRESS` Enables sending metrics to InfluxDB, e.g. `localhost:8089`
+* `TRAEFIK_INFLUXDB_PUSHINTERVAL` Default `10s`
+
 ### Prometheus
 
 Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 
  * `TRAEFIK_PROMETHEUS_ENTRYPOINT`
  * `TRAEFIK_PROMETHEUS_BUCKETS` Comma separated values. Default `0.1,0.3,1.2,5.0`
+
+### StatsD
+
+* `TRAEFIK_STATSD_ADDRESS` Enables sending metrics to StatsD, e.g. `localhost:8125`
+* `TRAEFIK_STATSD_PUSHINTERVAL` Default `10s`

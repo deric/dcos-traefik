@@ -157,11 +157,33 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
 # Metrics definition
 [metrics]
+  # Enable more detailed statistics.
+  [metrics.statistics]
 
+    # Number of recent errors logged.
+    #
+    # Default: 10
+    #
+    recentErrors = {{getv "/statistics/recent/errors" "10"}}
+{{if exists "/datadog/address" -}}
+  # DataDog metrics exporter type
+  [metrics.datadog]
+
+    # DataDog's address.
+    #
+    # Required
+    # Default: "localhost:8125"
+    #
+    address = "{{getv "/datadog/address"}}"
+
+    # DataDog push interval
+    #
+    # Optional
+    #
+    pushInterval = "{{getv "/datadog/pushinterval" "10s"}}"
+{{end -}}
 {{if exists "/prometheus/entrypoint" -}}
-  # To enable Traefik to export internal metrics to Prometheus
   [metrics.prometheus]
-
     # Name of the related entry point
     #
     # Optional
@@ -175,8 +197,40 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
     # Default: [0.1, 0.3, 1.2, 5]
     #
     buckets = [{{getv "/prometheus/buckets" "0.1,0.3,1.2,5.0"}}]
-{{- end}}
+{{end -}}
+{{if exists "/influxdb/address" -}}
+  [metrics.influxdb]
 
+    # InfluxDB's address.
+    #
+    # Required
+    # Default: "localhost:8089"
+    #
+    address = "{{getv "/influxdb/address"}}"
+
+    # InfluxDB push interval
+    #
+    # Optional
+    #
+    pushinterval = "{{getv "/influxdb/pushinterval" "10s"}}"
+{{end -}}
+{{if exists "/statsd/address" -}}
+  # StatsD metrics exporter type
+  [metrics.statsd]
+
+    # StatD's address.
+    #
+    # Required
+    # Default: "localhost:8125"
+    #
+    address = "{{getv "/statsd/address"}}"
+
+    # StatD push interval
+    #
+    # Optional
+    #
+    pushInterval = "{{getv "/statsd/pushinterval" "10s"}}"
+{{end -}}
 {{if exists "/file/name" -}}
 [file]
   filename = "{{getv "/file/name"}}"
