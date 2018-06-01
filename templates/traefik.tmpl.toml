@@ -18,20 +18,20 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
   [entryPoints.ping]
     address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
-{{- end}}{{- end}}
+{{end}}{{end -}}
 
 {{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
   [entryPoints.api]
     address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
     compress = {{getv "/api/compress" "false"}}
-{{- end}}{{- end}}
+{{end}}{{end -}}
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
 [ping]
   entryPoint = "ping"
-{{- end}}{{- end}}
+{{end}}{{end -}}
 
-{{- if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
+{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
 [api]
   entryPoint = "api"
   # Enabled Dashboard
@@ -43,9 +43,9 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   # Additionally, the log level will be set to DEBUG.
   #
   debug = {{getv "/api/debug" "false"}}
-{{- end}}{{- end}}
+{{end}}{{end -}}
 
-{{- if exists "/marathon/enable" -}}
+{{if exists "/marathon/enable" -}}
 [marathon]
   # Marathon server endpoint.
   # You can also specify multiple endpoint for Marathon:
