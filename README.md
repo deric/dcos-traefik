@@ -9,11 +9,13 @@
 In order to expose a service from Marathon add labels to your app:
 
 ```
-traefik.enable: true
-traefik.frontend.rule: Host:site.example.com
-traefik.protocol: http
-traefik.backend.healthcheck.path: /
-traefik.frontend.entryPoints:http,https
+labels: {
+  "traefik.enable": "true",
+  "traefik.frontend.rule": "Host:site.example.com",
+  "traefik.protocol": "http",
+  "traefik.backend.healthcheck.path": "/",
+  "traefik.frontend.entryPoints":"http,https"
+}
 ```
 See [documetation](https://docs.traefik.io/user-guide/marathon/) for more details.
 
@@ -28,6 +30,7 @@ See [documetation](https://docs.traefik.io/user-guide/marathon/) for more detail
  * `TRAEFIK_READ_TIMEOUT` The maximum duration for reading the entire request, including the body.
  * `TRAEFIK_WRITE_TIMEOUT` The maximum duration before timing out writes of the response.
  * `TRAEFIK_IDLE_TIMEOUT` The maximum duration an idle (keep-alive) connection will remain idle before closing itself.
+ * `TRAEFIK_RETRY` Number of attempts to reach backend service.
 
 ## Entrypoints
 

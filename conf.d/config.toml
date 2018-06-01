@@ -84,6 +84,7 @@ keys = [
   "/rancher/refresh",
   "/rancher/watch",
   "/read/timeout",
+  "/retry",
   "/statistics/recent/errors",
   "/statsd/address",
   "/statsd/pushinterval",

@@ -4,6 +4,14 @@ logLevel = "{{getv "/log/level" "INFO"}}"
 InsecureSkipVerify = {{getv "/insecure/skip" "false"}}
 defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
+[retry]
+# Number of attempts
+# Default: (number servers in backend) -1
+#
+{{if exists "/retry" -}}
+  attempts = {{getv "/retry"}}
+{{end -}}
+
 [lifeCycle]
 
 # Duration to keep accepting requests prior to initiating the graceful
