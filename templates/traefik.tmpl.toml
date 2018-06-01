@@ -291,6 +291,13 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   # templateVersion = 2
   {{end -}}
 
+  {{if exists "/rancher/method"}}{{if eq (getv "/rancher/method") "api" -}}
+  [rancher.api]
+    Endpoint = "{{getv "/rancher/cattle/url"}}"
+    AccessKey = "{{getv "/rancher/cattle/access/key"}}"
+    SecretKey = "{{getv "/rancher/cattle/secret/key"}}"
+  {{end}}{{end -}}
+  {{if exists "/rancher/method"}}{{if eq (getv "/rancher/method") "metadata" -}}
   [rancher.metadata]
 
   # Poll the Rancher metadata service for changes every `rancher.refreshSeconds`.
@@ -308,6 +315,7 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   # Default: "/latest"
   #
   prefix = "{{getv "/rancher/prefix" "/latest"}}"
+  {{end}}{{end -}}
 {{- end}}{{- end}}
 
 {{- if exists "/acme/enable"}}{{if eq (getv "/acme/enable") "true" -}}

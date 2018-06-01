@@ -4,6 +4,19 @@
 
 `traefik.toml` configuration file is generated using `confd` template. Currently configuration can be loaded from ENV variables, evetually support for consistent key-value storages like Etcd, ZooKeeper, Consul can be added.
 
+## Quickstart
+
+In order to expose a service from Marathon add labels to your app:
+
+```
+traefik.enable: true
+traefik.frontend.rule: Host:site.example.com
+traefik.protocol: http
+traefik.backend.healthcheck.path: /
+traefik.frontend.entryPoints:http,https
+```
+See [documetation](https://docs.traefik.io/user-guide/marathon/) for more details.
+
 ## Global configuration
 
  * `TRAEFIK_DEBUG` Default `false`
@@ -39,16 +52,6 @@ Heath check endpoint, responds without authentication to `/ping`.
  * `TRAEFIK_API_PORT` Default `8083`
  * `TRAEFIK_API_DASHBOARD` Default `true`
  * `TRAEFIK_API_DEBUG` This will install HTTP handlers to expose Go expvars under /debug/vars and pprof profiling. Default `false`.
-
-
- * `TRAEFIK_ADMIN_READ_ONLY` Default `false`
- * `TRAEFIK_ADMIN_STATISTICS` Default `10`
- * `TRAEFIK_ADMIN_AUTH_METHOD` Default `basic`
- * `TRAEFIK_ADMIN_AUTH_USERS`
-
- * `CATTLE_URL`
- * `CATTLE_ACCESS_KEY`
- * `CATTLE_SECRET_KEY`
 
 ## Custom configuration
 
@@ -98,7 +101,6 @@ Appends custom configuration to generated `traefik.toml` config.
  * `TRAEFIK_K8S_INGRESS_CLASS` Value of `kubernetes.io/ingress.class` annotation that identifies Ingress objects to be processed.
  * `TRAEFIK_K8S_DISABLE_PASS_HOST_HEADERS` Disable PassHost Headers.
  * `TRAEFIK_K8S_ENABLE_PASS_TLS_CERT` Enable PassTLSCert Headers.
-
 
 ### Rancher
 
