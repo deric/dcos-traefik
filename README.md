@@ -2,43 +2,53 @@
 
 [Traefik](https://traefik.io) package for DC/OS.
 
-`traefik.toml` configuration file is generated using `confd` template.
+`traefik.toml` configuration file is generated using `confd` template. Currently configuration can be loaded from ENV variables, evetually support for consistent key-value storages like Etcd, ZooKeeper, Consul can be added.
 
-## Supported ENV variables
+## Global configuration
 
- * `TRAEFIK_HTTP_COMPRESSION` Default `true`
- * `TRAEFIK_HTTPS_COMPRESSION` Default `true`
- * `TRAEFIK_HTTP_ADDRESS`
- * `TRAEFIK_HTTP_PORT` Default `80`
- * `TRAEFIK_HTTPS_ENABLE` Default `false`
- * `TRAEFIK_HTTPS_ADDRESS`
- * `TRAEFIK_HTTPS_PORT` Default `443`
- * `TRAEFIK_ADMIN_ENABLE` Default `true`
- * `TRAEFIK_ADMIN_PORT` Default `8000`
  * `TRAEFIK_DEBUG` Default `false`
  * `TRAEFIK_INSECURE_SKIP` Default `false`
  * `TRAEFIK_LOG_LEVEL` Default `INFO`
+ * `TRAEFIK_SSL_PATH` Default `$(pwd)/certs`
+
+## Endpoints
+
+### http
+
+* `TRAEFIK_HTTP_COMPRESSION` Default `true`
+* `TRAEFIK_HTTP_ADDRESS`
+* `TRAEFIK_HTTP_PORT` Default `80`
+
+### https
+
+ * `TRAEFIK_HTTPS_COMPRESSION` Default `true`
+ * `TRAEFIK_HTTPS_ENABLE` Default `false`
+ * `TRAEFIK_HTTPS_ADDRESS`
+ * `TRAEFIK_HTTPS_PORT` Default `443`
+
+### ping
+
+Heath check endpoint, responds without authentication to `/ping`.
+
+ * `TRAEFIK_PING_ENABLE` Default `true`
+ * `TRAEFIK_PING_PORT` Default `8082`
+
+### API
+
+ * `TRAEFIK_API_ENABLE` Default `true`
+ * `TRAEFIK_API_PORT` Default `8083`
+
+
  * `TRAEFIK_ADMIN_READ_ONLY` Default `false`
  * `TRAEFIK_ADMIN_STATISTICS` Default `10`
  * `TRAEFIK_ADMIN_AUTH_METHOD` Default `basic`
  * `TRAEFIK_ADMIN_AUTH_USERS`
- * `TRAEFIK_SSL_PATH` Default `$(pwd)/certs`
  * `TRAEFIK_ACME_ENABLE` Certificates from Let's Encrypt. Default `false`
  * `TRAEFIK_ACME_EMAIL`
  * `TRAEFIK_ACME_ONDEMAND` Default `true`
  * `TRAEFIK_ACME_ONHOSTRULE` Default `true`
  * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
- * `TRAEFIK_K8S_ENABLE` Default `false`
- * `TRAEFIK_K8S_OPTS`
- * `TRAEFIK_RANCHER_ENABLE` Default `false`
- * `TRAEFIK_RANCHER_REFRESH` Default `15`
- * `TRAEFIK_RANCHER_MODE` Default `api`
- * `TRAEFIK_RANCHER_DOMAIN` Default `rancher.internal`
- * `TRAEFIK_RANCHER_EXPOSED` Default `false`
- * `TRAEFIK_RANCHER_HEALTHCHECK` Default `true`
- * `TRAEFIK_RANCHER_INTERVALPOLL` Default `false`
- * `TRAEFIK_RANCHER_OPTS`
- * `TRAEFIK_RANCHER_PREFIX` Default `/2017-11-11`
+
  * `CATTLE_URL`
  * `CATTLE_ACCESS_KEY`
  * `CATTLE_SECRET_KEY`
@@ -57,11 +67,12 @@ Appends custom configuration to generated `treafik.toml` config.
 
 Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 
- * `TRAEFIK_PROMETHEUS_ENTRYPOINT` Default `traefik`
+ * `TRAEFIK_PROMETHEUS_ENTRYPOINT`
  * `TRAEFIK_PROMETHEUS_BUCKETS` Comma separated values. Default `0.1,0.3,1.2,5.0`
 
+## Providers
 
-## Marathon
+### Marathon
 
  * `TRAEFIK_MARATHON_ENABLE` Default `true`
  * `TRAEFIK_MARATHON_ENDPOINT` `http://marathon.mesos:8080`
@@ -75,3 +86,22 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
  * `TRAEFIK_MARATHON_KEEP_ALIVE` Default `10s`
  * `TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME` Default `false`
  * `TRAEFIK_MARATHON_RESPECT_READINESS_CHECKS` Default `false`
+
+
+### Kubernetess
+
+ * `TRAEFIK_K8S_ENABLE` Default `false`
+ * `TRAEFIK_K8S_OPTS`
+
+
+### Rancher
+
+ * `TRAEFIK_RANCHER_ENABLE` Default `false`
+ * `TRAEFIK_RANCHER_REFRESH` Default `15`
+ * `TRAEFIK_RANCHER_MODE` Default `api`
+ * `TRAEFIK_RANCHER_DOMAIN` Default `rancher.localhost`
+ * `TRAEFIK_RANCHER_EXPOSE` Default `true`
+ * `TRAEFIK_RANCHER_FILENAME` Configuration template.
+ * `TRAEFIK_RANCHER_HEALTHCHECK` Filter services with unhealthy states and inactive states. Default `true`
+ * `TRAEFIK_RANCHER_INTERVALPOLL` Default `false`
+ * `TRAEFIK_RANCHER_PREFIX` Default `/latest`

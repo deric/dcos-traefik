@@ -37,4 +37,12 @@ keys = [
   "/ping/port",
   "/prometheus/buckets",
   "/prometheus/entrypoint",
+  "/rancher/domain",
+  "/rancher/enable",
+  "/rancher/expose",
+  "/rancher/filename",
+  "/rancher/healthcheck",
+  "/rancher/intervalpoll",
+  "/rancher/refresh",
+  "/rancher/watch",
 ]

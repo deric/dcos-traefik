@@ -170,3 +170,77 @@ respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 filename = "{{getv "/file/name"}}"
 watch = {{getv "/file/watch" "true"}}
 {{end}}
+
+{{if exists "/rancher/enable"}}{{if eq (getv "/rancher/enable") "true"}}
+[rancher]
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on an service.
+#
+# Required
+#
+domain = "{{getv "/rancher/domain" "rancher.localhost"}}"
+
+# Enable watch Rancher changes.
+#
+# Optional
+# Default: true
+#
+watch = {{getv "/rancher/watch" "true"}}
+
+# Polling interval (in seconds).
+#
+# Optional
+# Default: 15
+#
+refreshSeconds = {{getv "/rancher/refresh" "15"}}
+
+# Expose Rancher services by default in Traefik.
+#
+# Optional
+# Default: true
+#
+exposedByDefault = {{getv "/rancher/expose" "true"}}
+
+# Filter services with unhealthy states and inactive states.
+#
+# Optional
+# Default: false
+#
+enableServiceHealthFilter = {{getv "/rancher/healthcheck" "true"}}
+
+{{if exists "/rancher/filename"}}
+#
+# Optional
+#
+# filename = "rancher.tmpl"
+
+# Override template version
+# For advanced users :)
+#
+# Optional
+# - "1": previous template version (must be used only with older custom templates, see "filename")
+# - "2": current template version (must be used to force template version when "filename" is used)
+#
+# templateVersion = 2
+
+[rancher.metadata]
+
+# Poll the Rancher metadata service for changes every `rancher.refreshSeconds`.
+# NOTE: this is less accurate than the default long polling technique which
+# will provide near instantaneous updates to Traefik
+#
+# Optional
+# Default: false
+#
+intervalPoll = {{getv "/rancher/intervalpoll" "false"}}
+
+# Prefix used for accessing the Rancher metadata service.
+#
+# Optional
+# Default: "/latest"
+#
+prefix = "{{getv "/rancher/prefix" "/latest"}}"
+
+{{end}}
+{{end}}{{end}}
