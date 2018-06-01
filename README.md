@@ -38,6 +38,7 @@ Heath check endpoint, responds without authentication to `/ping`.
  * `TRAEFIK_API_ENABLE` Default `true`
  * `TRAEFIK_API_PORT` Default `8083`
  * `TRAEFIK_API_DASHBOARD` Default `true`
+ * `TRAEFIK_API_DEBUG` Default `false`
 
 
  * `TRAEFIK_ADMIN_READ_ONLY` Default `false`
@@ -78,10 +79,10 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 
 ### Marathon
 
- * `TRAEFIK_MARATHON_ENABLE` Default `true`
+ * `TRAEFIK_MARATHON_ENABLE` Default `false`
  * `TRAEFIK_MARATHON_ENDPOINT` `http://marathon.mesos:8080`
  * `TRAEFIK_MARATHON_WATCH` Default `true`
- * `TRAEFIK_MARATHONLB_COMPATIBILITY` Default `false`
+ * `TRAEFIK_MARATHON_LB_COMPATIBILITY` Default `false`
  * `TRAEFIK_MARATHON_DOMAIN` Default `marathon.localhost`
  * `TRAEFIK_MARATHON_EXPOSE` Expose Marathon apps by default in Traefik. Default `true`
  * `TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS` Convert Marathon groups to subdomains. Default `false`
@@ -90,6 +91,18 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
  * `TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME` Default `false`
  * `TRAEFIK_MARATHON_RESPECT_READINESS_CHECKS` Default `false`
 
+### Mesos
+
+ * `TRAEFIK_MESOS_ENABLE` Default `false`
+ * `TRAEFIK_MESOS_ENDPOINT` `http://leader.mesos:5050`
+ * `TRAEFIK_MESOS_WATCH` Default `true`
+ * `TRAEFIK_MESOS_EXPOSE` Expose Mesos apps by default in Traefik. Default `false`
+ * `TRAEFIK_MESOS_FILENAME` Override default configuration template.
+ * `TRAEFIK_MESOS_ZK_TIMEOUT` Zookeeper timeout (in seconds).
+ * `TRAEFIK_MESOS_REFRESH` Polling interval (in seconds).
+ * `TRAEFIK_MESOS_IP_SOURCES` IP sources (e.g. host, docker, mesos, netinfo).
+ * `TRAEFIK_MESOS_TIMEOUT` HTTP Timeout (in seconds).
+ * `TRAEFIK_MESOS_GROUPS_AS_SUBDOMAINS` Convert Mesos groups to subdomains. Default `false`
 
 ### Kubernetess
 

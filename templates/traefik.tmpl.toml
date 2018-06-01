@@ -6,22 +6,24 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
 [entryPoints]
   [entryPoints.http]
-  address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
-  compress = {{getv "/http/compress" "true"}}
+    address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
+    compress = {{getv "/http/compress" "true"}}
+
 {{if exists "/https/enable"}}{{if eq (getv "/https/enable") "true" -}}
   [entryPoints.https]
-  address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
-  compress = {{getv "/https/compress" "true"}}
+    address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
+    compress = {{getv "/https/compress" "true"}}
 {{- end}}{{- end}}
+
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
   [entryPoints.ping]
-  address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
+    address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
 {{- end}}{{- end}}
 
 {{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
   [entryPoints.api]
-  address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
-  compress = {{getv "/api/compress" "false"}}
+    address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
+    compress = {{getv "/api/compress" "false"}}
 {{- end}}{{- end}}
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
@@ -29,7 +31,7 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   entryPoint = "ping"
 {{- end}}{{- end}}
 
-{{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
+{{- if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
 [api]
   entryPoint = "api"
   # Enabled Dashboard
@@ -43,7 +45,7 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   debug = {{getv "/api/debug" "false"}}
 {{- end}}{{- end}}
 
-{{if exists "/marathon/enable" -}}
+{{- if exists "/marathon/enable" -}}
 [marathon]
   # Marathon server endpoint.
   # You can also specify multiple endpoint for Marathon:
@@ -223,7 +225,7 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   #
   # Optional
   #
-  # filename = "rancher.tmpl"
+  filename = "{{getv "/rancher/filename"}}"
 
   # Override template version
   # For advanced users :)
@@ -233,6 +235,7 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   # - "2": current template version (must be used to force template version when "filename" is used)
   #
   # templateVersion = 2
+  {{end -}}
 
   [rancher.metadata]
 
@@ -251,11 +254,9 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   # Default: "/latest"
   #
   prefix = "{{getv "/rancher/prefix" "/latest"}}"
-
-{{- end}}
 {{- end}}{{- end}}
 
-{{if exists "/acme/enable"}}{{if eq (getv "/acme/enable") "true" -}}
+{{- if exists "/acme/enable"}}{{if eq (getv "/acme/enable") "true" -}}
 # Enable ACME (Let's Encrypt): automatic SSL.
 [acme]
 
@@ -361,4 +362,97 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
     # Default: 0
     #
     # delayBeforeCheck = 0
-{{- end}}{{- end}}
+{{end}}{{end -}}
+
+{{- if exists "/mesos/enable"}}{{if eq (getv "/mesos/enable") "true" -}}
+
+[mesos]
+  # Mesos server endpoint.
+  # You can also specify multiple endpoint for Mesos:
+  # endpoint = "192.168.35.40:5050,192.168.35.41:5050,192.168.35.42:5050"
+  # endpoint = "zk://192.168.35.20:2181,192.168.35.21:2181,192.168.35.22:2181/mesos"
+  #
+  # Required
+  endpoint = "{{getv "/mesos/endpoint" "http://leader.mesos:5050"}}"
+
+  # Enable watch Mesos changes.
+  #
+  # Optional
+  # Default: true
+  #
+  watch = {{getv "/mesos/watch" "true"}}
+
+  # Default domain used.
+  # Can be overridden by setting the "traefik.domain" label on an application.
+  #
+  # Required
+  #
+  domain = "{{getv "/mesos/domain" "mesos.localhost"}}"
+
+  # Expose Mesos apps by default in Traefik.
+  #
+  # Optional
+  # Default: true
+  #
+  exposedByDefault = {{getv "/mesos/expose" "false"}}
+
+  {{- if exists "/mesos/filename"}}
+  # Override default configuration template.
+  #
+  # Optional
+  #
+  filename = "{{getv "/mesos/filename"}}"
+
+  # Override template version
+  # For advanced users :)
+  #
+  # Optional
+  # - "1": previous template version (must be used only with older custom templates, see "filename")
+  # - "2": current template version (must be used to force template version when "filename" is used)
+  #
+  # templateVersion = 2
+  {{end -}}
+
+  # TLS client configuration. https://golang.org/pkg/crypto/tls/#Config
+  #
+  # Optional
+  #
+  # [mesos.TLS]
+  # insecureSkipVerify = true
+
+  # Zookeeper timeout (in seconds).
+  #
+  # Optional
+  # Default: 30
+  #
+  zkDetectionTimeout = {{getv "/mesos/zk/timeout" "30"}}
+
+  # Polling interval (in seconds).
+  #
+  # Optional
+  # Default: 30
+  #
+  refreshSeconds = {{getv "/mesos/refresh" "30"}}
+
+  # IP sources (e.g. host, docker, mesos, netinfo).
+  #
+  # Optional
+  #
+  ipSources = "{{getv "/mesos/ip/sources" "host"}}"
+
+  # HTTP Timeout (in seconds).
+  #
+  # Optional
+  # Default: 30
+  #
+  stateTimeoutSecond = "{{getv "/mesos/timeout" "30"}}"
+
+  # Convert groups to subdomains.
+  # Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
+  # with groupsAsSubDomains enabled: /foo/bar/myapp => myapp.bar.foo.{defaultDomain}
+  #
+  # Optional
+  # Default: false
+  #
+  groupsAsSubDomains = {{getv "/mesos/groups/as/subdomains" "false"}}
+{{end}}{{end -}}
