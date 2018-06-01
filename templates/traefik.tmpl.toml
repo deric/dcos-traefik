@@ -4,6 +4,57 @@ logLevel = "{{getv "/log/level" "INFO"}}"
 InsecureSkipVerify = {{getv "/insecure/skip" "false"}}
 defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
+[lifeCycle]
+
+# Duration to keep accepting requests prior to initiating the graceful
+# termination period (as defined by the `graceTimeOut` option). This
+# option is meant to give downstream load-balancers sufficient time to
+# take Traefik out of rotation.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+# The zero duration disables the request accepting grace period, i.e.,
+# Traefik will immediately proceed to the grace period.
+#
+# Optional
+# Default: 0
+#
+# requestAcceptGraceTimeout = "10s"
+
+# Duration to give active requests a chance to finish before Traefik stops.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+# Note: in this time frame no new requests are accepted.
+#
+# Optional
+# Default: "10s"
+#
+graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
+
+[healthcheck]
+# Set the default health check interval.#
+  interval = "{{getv "/healthcheck/interval" "30s"}}"
+
+[respondingTimeouts]
+# readTimeout is the maximum duration for reading the entire request, including the body.
+#
+# Default: "0s"
+#
+  readTimeout = "{{getv "/read/timeout" "0s"}}"
+
+# writeTimeout is the maximum duration before timing out writes of the response.
+#
+# Optional
+# Default: "0s"
+#
+  writeTimeout = "{{getv "/write/timeout" "0s"}}"
+
+# idleTimeout is the maximum duration an idle (keep-alive) connection will remain idle before closing itself.
+#
+# Optional
+# Default: "180s"
+#
+  idleTimeout = "{{getv "/idle/timeout" "180s"}}"
+
 [entryPoints]
   [entryPoints.http]
     address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"

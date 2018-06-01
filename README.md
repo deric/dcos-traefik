@@ -22,9 +22,14 @@ See [documetation](https://docs.traefik.io/user-guide/marathon/) for more detail
  * `TRAEFIK_DEBUG` Default `false`
  * `TRAEFIK_INSECURE_SKIP` Default `false`
  * `TRAEFIK_LOG_LEVEL` Default `INFO`
- * `TRAEFIK_SSL_PATH` Default `$(pwd)/certs`
+ * `TRAEFIK_DEFAULT_ENTRYPOINTS` Entrypoints to be used by frontends that do not specify any entrypoint. Each frontend can specify its own entrypoints.
+ * `TRAEFIK_GRACE_TIMEOUT` Duration to give active requests a chance to finish before Traefik stops.
+ * `TRAEFIK_HEALTHCHECK_INTERVAL` Set the default health check interval (`30s`).
+ * `TRAEFIK_READ_TIMEOUT` The maximum duration for reading the entire request, including the body.
+ * `TRAEFIK_WRITE_TIMEOUT` The maximum duration before timing out writes of the response.
+ * `TRAEFIK_IDLE_TIMEOUT` The maximum duration an idle (keep-alive) connection will remain idle before closing itself.
 
-## Endpoints
+## Entrypoints
 
 ### http
 
