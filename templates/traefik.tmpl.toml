@@ -63,6 +63,16 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
 #
   idleTimeout = "{{getv "/idle/timeout" "180s"}}"
 
+{{if exists "/access/log"}}{{if eq (getv "/access/log") "true" -}}
+[accessLog]
+  {{if exists "/access/path" -}}
+  filePath = "{{getv "/access/path"}}"
+  {{end -}}
+  {{if exists "/access/format" -}}
+  format = "{{getv "/access/format"}}"
+  {{end -}}
+{{end}}{{end -}}
+
 [entryPoints]
   [entryPoints.http]
     address = "{{getv "/http/address" ""}}:{{getv "/http/port" "80"}}"
@@ -72,7 +82,7 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
   [entryPoints.https]
     address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
     compress = {{getv "/https/compress" "true"}}
-{{- end}}{{- end}}
+{{end}}{{end -}}
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
   [entryPoints.ping]

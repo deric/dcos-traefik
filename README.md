@@ -32,6 +32,16 @@ See [documetation](https://docs.traefik.io/user-guide/marathon/) for more detail
  * `TRAEFIK_IDLE_TIMEOUT` The maximum duration an idle (keep-alive) connection will remain idle before closing itself.
  * `TRAEFIK_RETRY` Number of attempts to reach backend service.
 
+## Logs
+
+### Access logs
+
+By default the Traefik log is written to stdout in text format.
+
+* `TRAEFIK_ACCESS_LOG` Enable logging. Default `false`
+* `TRAEFIK_ACCESS_FORMAT` Logs format, e.g. `json`
+* `TRAEFIK_ACCESS_PATH` Path to logs
+
 ## Entrypoints
 
 ### http

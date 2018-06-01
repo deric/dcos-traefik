@@ -3,6 +3,9 @@ src = "traefik.tmpl.toml"
 dest = "traefik.toml"
 prefix = "traefik"
 keys = [
+  "/access/log",
+  "/access/format",
+  "/access/path",
   "/acme/email",
   "/acme/enable",
   "/acme/entrypoint",
