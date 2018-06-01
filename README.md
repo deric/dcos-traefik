@@ -37,17 +37,13 @@ Heath check endpoint, responds without authentication to `/ping`.
 
  * `TRAEFIK_API_ENABLE` Default `true`
  * `TRAEFIK_API_PORT` Default `8083`
+ * `TRAEFIK_API_DASHBOARD` Default `true`
 
 
  * `TRAEFIK_ADMIN_READ_ONLY` Default `false`
  * `TRAEFIK_ADMIN_STATISTICS` Default `10`
  * `TRAEFIK_ADMIN_AUTH_METHOD` Default `basic`
  * `TRAEFIK_ADMIN_AUTH_USERS`
- * `TRAEFIK_ACME_ENABLE` Certificates from Let's Encrypt. Default `false`
- * `TRAEFIK_ACME_EMAIL`
- * `TRAEFIK_ACME_ONDEMAND` Default `true`
- * `TRAEFIK_ACME_ONHOSTRULE` Default `true`
- * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
 
  * `CATTLE_URL`
  * `CATTLE_ACCESS_KEY`
@@ -55,11 +51,19 @@ Heath check endpoint, responds without authentication to `/ping`.
 
 ## Custom configuration
 
-Appends custom configuration to generated `treafik.toml` config.
+Appends custom configuration to generated `traefik.toml` config.
 
  * `TRAEFIK_FILE_NAME` Default `rules.toml`
  * `TRAEFIK_FILE_WATCH` Default `true`
 
+## Let's Encrypt
+
+ * `TRAEFIK_ACME_ENABLE` Certificates from Let's Encrypt. Default `false`
+ * `TRAEFIK_ACME_EMAIL`
+ * `TRAEFIK_ACME_ENTRYPOINT` Default `https`.
+ * `TRAEFIK_ACME_STORAGE` File or key used for certificates storage.
+ * `TRAEFIK_ACME_ONHOSTRULE` Default `false`
+ * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
 
 ## Metrics
 
@@ -79,9 +83,8 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
  * `TRAEFIK_MARATHON_WATCH` Default `true`
  * `TRAEFIK_MARATHONLB_COMPATIBILITY` Default `false`
  * `TRAEFIK_MARATHON_DOMAIN` Default `marathon.localhost`
- * `TRAEFIK_MARATHON_OPTS`
- * `TRAEFIK_MARATHON_EXPOSE` Default `true`
- * `TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS` Default `false`
+ * `TRAEFIK_MARATHON_EXPOSE` Expose Marathon apps by default in Traefik. Default `true`
+ * `TRAEFIK_MARATHON_GROUPS_AS_SUBDOMAINS` Convert Marathon groups to subdomains. Default `false`
  * `TRAEFIK_MARATHON_DIALER_TIMEOUT` Default `60s`
  * `TRAEFIK_MARATHON_KEEP_ALIVE` Default `10s`
  * `TRAEFIK_MARATHON_FORCE_TASK_HOSTNAME` Default `false`

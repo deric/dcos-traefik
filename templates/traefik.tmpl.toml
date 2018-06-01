@@ -26,122 +26,131 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
 [ping]
-entryPoint = "ping"
+  entryPoint = "ping"
 {{- end}}{{- end}}
 
 {{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
 [api]
-entryPoint = "api"
+  entryPoint = "api"
+  # Enabled Dashboard
+  dashboard = {{getv "/api/dashboard" "true"}}
+
+  # Enable debug mode.
+  # This will install HTTP handlers to expose Go expvars under /debug/vars and
+  # pprof profiling data under /debug/pprof.
+  # Additionally, the log level will be set to DEBUG.
+  #
+  debug = {{getv "/api/debug" "false"}}
 {{- end}}{{- end}}
 
 {{if exists "/marathon/enable" -}}
 [marathon]
-# Marathon server endpoint.
-# You can also specify multiple endpoint for Marathon:
-# endpoint = "http://10.241.1.71:8080,10.241.1.72:8080,10.241.1.73:8080"
-#
-endpoint = "{{getv "/marathon/endpoint" "http://marathon.mesos:8080"}}"
-watch = {{getv "/marathon/watch" "true"}}
+  # Marathon server endpoint.
+  # You can also specify multiple endpoint for Marathon:
+  # endpoint = "http://10.241.1.71:8080,10.241.1.72:8080,10.241.1.73:8080"
+  #
+  endpoint = "{{getv "/marathon/endpoint" "http://marathon.mesos:8080"}}"
+  watch = {{getv "/marathon/watch" "true"}}
 
-# Default domain used.
-# Can be overridden by setting the "traefik.domain" label on an application.
-#
-# Required
-#
-domain = "{{getv "/marathon/domain" "marathon.localhost"}}"
+  # Default domain used.
+  # Can be overridden by setting the "traefik.domain" label on an application.
+  #
+  # Required
+  #
+  domain = "{{getv "/marathon/domain" "marathon.localhost"}}"
 
-# Expose Marathon apps by default in Traefik.
-#
-# Optional
-# Default: true
-#
-exposedByDefault = {{getv "/marathon/expose" "true"}}
+  # Expose Marathon apps by default in Traefik.
+  #
+  # Optional
+  # Default: true
+  #
+  exposedByDefault = {{getv "/marathon/expose" "true"}}
 
-# Convert Marathon groups to subdomains.
-# Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
-# with groupsAsSubDomains enabled: /foo/bar/myapp => myapp.bar.foo.{defaultDomain}
-#
-# Optional
-# Default: false
-#
-groupsAsSubDomains = {{getv "/marathon/groups/as/subdomains" "false"}}
+  # Convert Marathon groups to subdomains.
+  # Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
+  # with groupsAsSubDomains enabled: /foo/bar/myapp => myapp.bar.foo.{defaultDomain}
+  #
+  # Optional
+  # Default: false
+  #
+  groupsAsSubDomains = {{getv "/marathon/groups/as/subdomains" "false"}}
 
-# Enable compatibility with marathon-lb labels.
-#
-# Optional
-# Default: false
-#
-marathonLBCompatibility = {{getv "/marathon/lb/compatibility" "false"}}
+  # Enable compatibility with marathon-lb labels.
+  #
+  # Optional
+  # Default: false
+  #
+  marathonLBCompatibility = {{getv "/marathon/lb/compatibility" "false"}}
 
-# Enable Marathon basic authentication.
-#
-# Optional
-#
-#    [marathon.basic]
-#    httpBasicAuthUser = "foo"
-#    httpBasicPassword = "bar"
+  # Enable Marathon basic authentication.
+  #
+  # Optional
+  #
+  #    [marathon.basic]
+  #    httpBasicAuthUser = "foo"
+  #    httpBasicPassword = "bar"
 
-# TLS client configuration. https://golang.org/pkg/crypto/tls/#Config
-#
-# Optional
-#
-#    [marathon.TLS]
-#    CA = "/etc/ssl/ca.crt"
-#    Cert = "/etc/ssl/marathon.cert"
-#    Key = "/etc/ssl/marathon.key"
-#    InsecureSkipVerify = true
+  # TLS client configuration. https://golang.org/pkg/crypto/tls/#Config
+  #
+  # Optional
+  #
+  #    [marathon.TLS]
+  #    CA = "/etc/ssl/ca.crt"
+  #    Cert = "/etc/ssl/marathon.cert"
+  #    Key = "/etc/ssl/marathon.key"
+  #    InsecureSkipVerify = true
 
-{{if exists "/marathon/dcos/token" -}}
-# DCOSToken for DCOS environment.
-# This will override the Authorization header.
-#
-# Optional
+  {{if exists "/marathon/dcos/token" -}}
+  # DCOSToken for DCOS environment.
+  # This will override the Authorization header.
+  #
+  # Optional
 
-dcosToken = "{{getv "/marathon/dcos/token"}}"
-{{- end}}
-# Override DialerTimeout.
-# Amount of time to allow the Marathon provider to wait to open a TCP connection
-# to a Marathon master.
-# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
-# values (digits).
-# If no units are provided, the value is parsed assuming seconds.
-#
-# Optional
-# Default: "60s"
-#
-dialerTimeout = "{{getv "/marathon/dialer/timeout" "60s"}}"
+  dcosToken = "{{getv "/marathon/dcos/token"}}"
+  {{- end}}
+  # Override DialerTimeout.
+  # Amount of time to allow the Marathon provider to wait to open a TCP connection
+  # to a Marathon master.
+  # Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+  # values (digits).
+  # If no units are provided, the value is parsed assuming seconds.
+  #
+  # Optional
+  # Default: "60s"
+  #
+  dialerTimeout = "{{getv "/marathon/dialer/timeout" "60s"}}"
 
-# Set the TCP Keep Alive interval for the Marathon HTTP Client.
-# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
-# values (digits).
-# If no units are provided, the value is parsed assuming seconds.
-#
-# Optional
-# Default: "10s"
-#
-keepAlive = "{{getv "/marathon/keep/alive" "60s"}}"
+  # Set the TCP Keep Alive interval for the Marathon HTTP Client.
+  # Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw
+  # values (digits).
+  # If no units are provided, the value is parsed assuming seconds.
+  #
+  # Optional
+  # Default: "10s"
+  #
+  keepAlive = "{{getv "/marathon/keep/alive" "60s"}}"
 
-# By default, a task's IP address (as returned by the Marathon API) is used as
-# backend server if an IP-per-task configuration can be found; otherwise, the
-# name of the host running the task is used.
-# The latter behavior can be enforced by enabling this switch.
-#
-# Optional
-# Default: false
-#
-forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
+  # By default, a task's IP address (as returned by the Marathon API) is used as
+  # backend server if an IP-per-task configuration can be found; otherwise, the
+  # name of the host running the task is used.
+  # The latter behavior can be enforced by enabling this switch.
+  #
+  # Optional
+  # Default: false
+  #
+  forceTaskHostname = {{getv "/marathon/force/task/hostname" "false"}}
 
-# Applications may define readiness checks which are probed by Marathon during
-# deployments periodically and the results exposed via the API.
-# Enabling the following parameter causes Traefik to filter out tasks
-# whose readiness checks have not succeeded.
-# Note that the checks are only valid at deployment times.
-# See the Marathon guide for details.
-#
-# Optional
-# Default: false
-#
-respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
+  # Applications may define readiness checks which are probed by Marathon during
+  # deployments periodically and the results exposed via the API.
+  # Enabling the following parameter causes Traefik to filter out tasks
+  # whose readiness checks have not succeeded.
+  # Note that the checks are only valid at deployment times.
+  # See the Marathon guide for details.
+  #
+  # Optional
+  # Default: false
+  #
+  respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 {{- end}}
 
 # Metrics definition
@@ -168,80 +177,188 @@ respectReadinessChecks = {{getv "/marathon/respect/readiness/checks" "false"}}
 
 {{if exists "/file/name" -}}
 [file]
-filename = "{{getv "/file/name"}}"
-watch = {{getv "/file/watch" "true"}}
+  filename = "{{getv "/file/name"}}"
+  watch = {{getv "/file/watch" "true"}}
 {{- end}}
 
 {{if exists "/rancher/enable"}}{{if eq (getv "/rancher/enable") "true" -}}
 [rancher]
 
-# Default domain used.
-# Can be overridden by setting the "traefik.domain" label on an service.
-#
-# Required
-#
-domain = "{{getv "/rancher/domain" "rancher.localhost"}}"
+  # Default domain used.
+  # Can be overridden by setting the "traefik.domain" label on an service.
+  #
+  # Required
+  #
+  domain = "{{getv "/rancher/domain" "rancher.localhost"}}"
 
-# Enable watch Rancher changes.
-#
-# Optional
-# Default: true
-#
-watch = {{getv "/rancher/watch" "true"}}
+  # Enable watch Rancher changes.
+  #
+  # Optional
+  # Default: true
+  #
+  watch = {{getv "/rancher/watch" "true"}}
 
-# Polling interval (in seconds).
-#
-# Optional
-# Default: 15
-#
-refreshSeconds = {{getv "/rancher/refresh" "15"}}
+  # Polling interval (in seconds).
+  #
+  # Optional
+  # Default: 15
+  #
+  refreshSeconds = {{getv "/rancher/refresh" "15"}}
 
-# Expose Rancher services by default in Traefik.
-#
-# Optional
-# Default: true
-#
-exposedByDefault = {{getv "/rancher/expose" "true"}}
+  # Expose Rancher services by default in Traefik.
+  #
+  # Optional
+  # Default: true
+  #
+  exposedByDefault = {{getv "/rancher/expose" "true"}}
 
-# Filter services with unhealthy states and inactive states.
-#
-# Optional
-# Default: false
-#
-enableServiceHealthFilter = {{getv "/rancher/healthcheck" "true"}}
+  # Filter services with unhealthy states and inactive states.
+  #
+  # Optional
+  # Default: false
+  #
+  enableServiceHealthFilter = {{getv "/rancher/healthcheck" "true"}}
 
-{{- if exists "/rancher/filename"}}
-#
-# Optional
-#
-# filename = "rancher.tmpl"
+  {{- if exists "/rancher/filename"}}
+  #
+  # Optional
+  #
+  # filename = "rancher.tmpl"
 
-# Override template version
-# For advanced users :)
-#
-# Optional
-# - "1": previous template version (must be used only with older custom templates, see "filename")
-# - "2": current template version (must be used to force template version when "filename" is used)
-#
-# templateVersion = 2
+  # Override template version
+  # For advanced users :)
+  #
+  # Optional
+  # - "1": previous template version (must be used only with older custom templates, see "filename")
+  # - "2": current template version (must be used to force template version when "filename" is used)
+  #
+  # templateVersion = 2
 
-[rancher.metadata]
+  [rancher.metadata]
 
-# Poll the Rancher metadata service for changes every `rancher.refreshSeconds`.
-# NOTE: this is less accurate than the default long polling technique which
-# will provide near instantaneous updates to Traefik
-#
-# Optional
-# Default: false
-#
-intervalPoll = {{getv "/rancher/intervalpoll" "false"}}
+  # Poll the Rancher metadata service for changes every `rancher.refreshSeconds`.
+  # NOTE: this is less accurate than the default long polling technique which
+  # will provide near instantaneous updates to Traefik
+  #
+  # Optional
+  # Default: false
+  #
+  intervalPoll = {{getv "/rancher/intervalpoll" "false"}}
 
-# Prefix used for accessing the Rancher metadata service.
-#
-# Optional
-# Default: "/latest"
-#
-prefix = "{{getv "/rancher/prefix" "/latest"}}"
+  # Prefix used for accessing the Rancher metadata service.
+  #
+  # Optional
+  # Default: "/latest"
+  #
+  prefix = "{{getv "/rancher/prefix" "/latest"}}"
 
 {{- end}}
+{{- end}}{{- end}}
+
+{{if exists "/acme/enable"}}{{if eq (getv "/acme/enable") "true" -}}
+# Enable ACME (Let's Encrypt): automatic SSL.
+[acme]
+
+  # Email address used for registration.
+  #
+  # Required
+  #
+  email = "{{getv "/acme/email"}}"
+
+  # File or key used for certificates storage.
+  #
+  # Required
+  #
+  storage = "{{getv "/acme/storage" "acme.json"}}"
+  # or `storage = "traefik/acme/account"` if using KV store.
+
+  # Entrypoint to proxy acme apply certificates to.
+  #
+  # Required
+  #
+  entryPoint = "{{getv "/acme/entrypoint" "https"}}"
+
+  # Deprecated, replaced by [acme.dnsChallenge].
+  #
+  # Optional.
+  #
+  # dnsProvider = "digitalocean"
+
+  # Deprecated, replaced by [acme.dnsChallenge.delayBeforeCheck].
+  #
+  # Optional
+  # Default: 0
+  #
+  # delayDontCheckDNS = 0
+
+  # If true, display debug log messages from the acme client library.
+  #
+  # Optional
+  # Default: false
+  #
+  # acmeLogging = true
+
+  # Enable certificate generation on frontends Host rules.
+  #
+  # Optional
+  # Default: false
+  #
+  onHostRule = {{getv "/acme/onhostrule" "false"}}
+
+  # CA server to use.
+  # - Uncomment the line to run on the staging let's encrypt server.
+  # - Leave comment to go to prod.
+  #
+  # Optional
+  # Default: "https://acme-v02.api.letsencrypt.org/directory"
+  #
+  # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+
+  # Domains list.
+  # Only domains defined here can generate wildcard certificates.
+  #
+  # [[acme.domains]]
+  #   main = "local1.com"
+  #   sans = ["test1.local1.com", "test2.local1.com"]
+  # [[acme.domains]]
+  #   main = "local2.com"
+  #   sans = ["test1.local2.com", "test2.local2.com"]
+  # [[acme.domains]]
+  #   main = "local3.com"
+  # [[acme.domains]]
+  #   main = "local4.com"
+
+  # Use a HTTP-01 acme challenge.
+  #
+  # Optional but recommend
+  #
+  [acme.httpChallenge]
+
+    # EntryPoint to use for the HTTP-01 challenges.
+    #
+    # Required
+    #
+    entryPoint = "http"
+
+  # Use a DNS-01/DNS-01 acme challenge rather than HTTP-01 challenge.
+  # Note : Mandatory for wildcard certificates generation.
+  #
+  # Optional
+  #
+  # [acme.dnsChallenge]
+
+    # Provider used.
+    #
+    # Required
+    #
+    # provider = "digitalocean"
+
+    # By default, the provider will verify the TXT DNS challenge record before letting ACME verify.
+    # If delayBeforeCheck is greater than zero, avoid this & instead just wait so many seconds.
+    # Useful if internal networks block external DNS queries.
+    #
+    # Optional
+    # Default: 0
+    #
+    # delayBeforeCheck = 0
 {{- end}}{{- end}}

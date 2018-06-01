@@ -3,9 +3,16 @@ src = "traefik.tmpl.toml"
 dest = "traefik.toml"
 prefix = "traefik"
 keys = [
+  "/acme/email",
+  "/acme/enable",
+  "/acme/entrypoint",
+  "/acme/onhostrule",
+  "/acme/storage",
   "/api/address",
-  "/api/enable",
   "/api/compression",
+  "/api/dashboard",
+  "/api/debug",
+  "/api/enable",
   "/api/port",
   "/debug",
   "/default/entrypoints",
