@@ -456,3 +456,87 @@ defaultEntryPoints = [{{getv "/default/entrypoints" "\"http\""}}]
   #
   groupsAsSubDomains = {{getv "/mesos/groups/as/subdomains" "false"}}
 {{end}}{{end -}}
+
+{{- if exists "/k8s/enable"}}{{if eq (getv "/k8s/enable") "true" -}}
+
+  [kubernetes]
+  # Kubernetes server endpoint.
+  #
+  # Optional for in-cluster configuration, required otherwise.
+  # Default: empty
+  #
+  {{if exists "/k8s/endpoint" -}}
+    endpoint = "{{getv "/k8s/endpoint"}}"
+  {{end -}}
+
+  # Bearer token used for the Kubernetes client configuration.
+  #
+  # Optional
+  # Default: empty
+  {{if exists "/k8s/token" -}}
+    token = "{{getv "/k8s/token"}}"
+  {{end -}}
+
+  # Path to the certificate authority file.
+  # Used for the Kubernetes client configuration.
+  #
+  # Optional
+  # Default: empty
+  #
+  {{if exists "/k8s/ca" -}}
+    certAuthFilePath = "{{getv "/k8s/ca"}}"
+  {{end -}}
+
+  # Array of namespaces to watch.
+  #
+  # Optional
+  # Default: all namespaces (empty array).
+  #
+  namespaces = [{{getv "/k8s/namespaces" ""}}]
+
+  # Ingress label selector to filter Ingress objects that should be processed.
+  #
+  # Optional
+  # Default: empty (process all Ingresses)
+  #
+  {{if exists "/k8s/labelselector" -}}
+  labelselector = "{{getv "/k8s/labelselector"}}"
+  {{end -}}
+
+  # Value of `kubernetes.io/ingress.class` annotation that identifies Ingress objects to be processed.
+  # If the parameter is non-empty, only Ingresses containing an annotation with the same value are processed.
+  # Otherwise, Ingresses missing the annotation, having an empty value, or the value `traefik` are processed.
+  #
+  # Note : `ingressClass` option must begin with the "traefik" prefix.
+  #
+  # Optional
+  # Default: empty
+  #
+  # ingressClass = "traefik-internal"
+  {{if exists "/k8s/ingress/class" -}}
+  ingressClass = "{{getv "/k8s/ingress/class"}}"
+  {{end -}}
+
+  # Disable PassHost Headers.
+  #
+  # Optional
+  # Default: false
+  #
+  disablePassHostHeaders = {{getv "/k8s/disable/pass/host/headers" "false"}}
+
+  # Enable PassTLSCert Headers.
+  #
+  # Optional
+  # Default: false
+  #
+  enablePassTLSCert = {{getv "/k8s/enable/pass/tls/cert" "false"}}
+
+  # Override default configuration template.
+  #
+  # Optional
+  # Default: <built-in template>
+  #
+  {{if exists "/k8s/filename" -}}
+  filename = "{{getv "/k8s/filename"}}"
+  {{end -}}
+{{end}}{{end -}}

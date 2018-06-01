@@ -11,6 +11,7 @@
   - Removed `TRAEFIK_PROMETHEUS_ENABLE`, setting value to `TRAEFIK_PROMETHEUS_ENTRYPOINT` is enough.
   - Removed deprecated `TRAEFIK_ACME_ONDEMAND`
   - Added Mesos provider
+  - Improved Kubernetess support
 
 ## v1.0.0
  - Initial release

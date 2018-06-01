@@ -38,7 +38,7 @@ Heath check endpoint, responds without authentication to `/ping`.
  * `TRAEFIK_API_ENABLE` Default `true`
  * `TRAEFIK_API_PORT` Default `8083`
  * `TRAEFIK_API_DASHBOARD` Default `true`
- * `TRAEFIK_API_DEBUG` Default `false`
+ * `TRAEFIK_API_DEBUG` This will install HTTP handlers to expose Go expvars under /debug/vars and pprof profiling. Default `false`.
 
 
  * `TRAEFIK_ADMIN_READ_ONLY` Default `false`
@@ -56,24 +56,6 @@ Appends custom configuration to generated `traefik.toml` config.
 
  * `TRAEFIK_FILE_NAME` Default `rules.toml`
  * `TRAEFIK_FILE_WATCH` Default `true`
-
-## Let's Encrypt
-
- * `TRAEFIK_ACME_ENABLE` Certificates from Let's Encrypt. Default `false`
- * `TRAEFIK_ACME_EMAIL`
- * `TRAEFIK_ACME_ENTRYPOINT` Default `https`.
- * `TRAEFIK_ACME_STORAGE` File or key used for certificates storage.
- * `TRAEFIK_ACME_ONHOSTRULE` Default `false`
- * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
-
-## Metrics
-
-### Prometheus
-
-Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
-
- * `TRAEFIK_PROMETHEUS_ENTRYPOINT`
- * `TRAEFIK_PROMETHEUS_BUCKETS` Comma separated values. Default `0.1,0.3,1.2,5.0`
 
 ## Providers
 
@@ -107,7 +89,15 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 ### Kubernetess
 
  * `TRAEFIK_K8S_ENABLE` Default `false`
- * `TRAEFIK_K8S_OPTS`
+ * `TRAEFIK_K8S_ENDPOINT` Kubernetes server endpoint.
+ * `TRAEFIK_K8S_TOKEN` Bearer token used for the Kubernetes client configuration.
+ * `TRAEFIK_K8S_CA` Path to the certificate authority file.
+ * `TRAEFIK_K8S_NAMESPACES` Comma-separated namespaces to watch. e.g. `"\"default\",\"production\""`
+ * `TRAEFIK_K8S_LABELSELECTOR` Ingress label selector to filter Ingress objects that should be processed. e.g. `"A and not B"`
+ * `TRAEFIK_K8S_FILENAME` Override default configuration template.
+ * `TRAEFIK_K8S_INGRESS_CLASS` Value of `kubernetes.io/ingress.class` annotation that identifies Ingress objects to be processed.
+ * `TRAEFIK_K8S_DISABLE_PASS_HOST_HEADERS` Disable PassHost Headers.
+ * `TRAEFIK_K8S_ENABLE_PASS_TLS_CERT` Enable PassTLSCert Headers.
 
 
 ### Rancher
@@ -121,3 +111,21 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
  * `TRAEFIK_RANCHER_HEALTHCHECK` Filter services with unhealthy states and inactive states. Default `true`
  * `TRAEFIK_RANCHER_INTERVALPOLL` Default `false`
  * `TRAEFIK_RANCHER_PREFIX` Default `/latest`
+
+## Let's Encrypt
+
+ * `TRAEFIK_ACME_ENABLE` Certificates from Let's Encrypt. Default `false`
+ * `TRAEFIK_ACME_EMAIL`
+ * `TRAEFIK_ACME_ENTRYPOINT` Default `https`.
+ * `TRAEFIK_ACME_STORAGE` File or key used for certificates storage.
+ * `TRAEFIK_ACME_ONHOSTRULE` Default `false`
+ * `TRAEFIK_ACME_CASERVER` Default `https://acme-v01.api.letsencrypt.org/directory`
+
+## Metrics
+
+### Prometheus
+
+Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
+
+ * `TRAEFIK_PROMETHEUS_ENTRYPOINT`
+ * `TRAEFIK_PROMETHEUS_BUCKETS` Comma separated values. Default `0.1,0.3,1.2,5.0`
