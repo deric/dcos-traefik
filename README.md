@@ -13,10 +13,15 @@ labels: {
   "traefik.enable": "true",
   "traefik.frontend.rule": "Host:site.example.com",
   "traefik.protocol": "http",
-  "traefik.backend.healthcheck.path": "/",
+  "traefik.backend.healthcheck.path": "/health",
   "traefik.frontend.entryPoints":"http,https"
 }
 ```
+Then you should be able to reach you site via Traefik's HTTP port (`TRAEFIK_HTTP_PORT`):
+```
+curl -H 'Host:site.example.com' localhost:80/health
+```
+
 See [documetation](https://docs.traefik.io/user-guide/marathon/) for more details.
 
 ## Global configuration
@@ -62,12 +67,14 @@ By default the Traefik log is written to stdout in text format.
 Heath check endpoint, responds without authentication to `/ping`.
 
  * `TRAEFIK_PING_ENABLE` Default `true`
- * `TRAEFIK_PING_PORT` Default `8082`
+ * `TRAEFIK_PING_PORT` If variable not defined, `$PORT0` will be used.
 
 ### API
 
- * `TRAEFIK_API_ENABLE` Default `true`
- * `TRAEFIK_API_PORT` Default `8083`
+Former `web.admin` interface.
+
+ * `TRAEFIK_API_ENABLE` Enable API entrypoint
+ * `TRAEFIK_API_PORT` If variable not defined, `$PORT1` will be used.
  * `TRAEFIK_API_DASHBOARD` Default `true`
  * `TRAEFIK_API_DEBUG` This will install HTTP handlers to expose Go expvars under /debug/vars and pprof profiling. Default `false`.
 

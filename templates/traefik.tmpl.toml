@@ -86,12 +86,20 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
   [entryPoints.ping]
-    address = "{{getv "/ping/address" ""}}:{{getv "/ping/port" "8082"}}"
+{{if exists "/ping/port" -}}
+    address = "{{getv "/ping/address" ""}}:{{getv "/ping/port"}}"
+{{else -}}
+    address = "{{getv "/ping/address" ""}}:{{getenv "PORT0"}}"
+{{end -}}
 {{end}}{{end -}}
 
 {{if exists "/api/enable"}}{{if eq (getv "/api/enable") "true" -}}
   [entryPoints.api]
-    address = "{{getv "/api/address" ""}}:{{getv "/api/port" "8083"}}"
+{{if exists "/api/port" -}}
+    address = "{{getv "/api/address" ""}}:{{getv "/api/port"}}"
+{{else -}}
+    address = "{{getv "/api/address" ""}}:{{getenv "PORT1"}}"
+{{end -}}
     compress = {{getv "/api/compress" "false"}}
 {{end}}{{end -}}
 
