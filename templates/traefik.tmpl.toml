@@ -584,7 +584,7 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
   # Optional
   # Default: 30
   #
-  stateTimeoutSecond = "{{getv "/mesos/timeout" "30"}}"
+  stateTimeoutSecond = {{getv "/mesos/timeout" "30"}}
 
   # Convert groups to subdomains.
   # Default behavior: /foo/bar/myapp => foo-bar-myapp.{defaultDomain}
