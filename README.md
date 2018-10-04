@@ -61,6 +61,8 @@ By default the Traefik log is written to stdout in text format.
  * `TRAEFIK_HTTPS_ENABLE` Default `false`
  * `TRAEFIK_HTTPS_ADDRESS`
  * `TRAEFIK_HTTPS_PORT` Default `443`
+ * `TRAEFIK_HTTPS_CERT` Certificate file, e.g. `examples/traefik.crt`
+ * `TRAEFIK_HTTPS_KEY` Certificate key, e.g. `examples/traefik.key`
 
 ### ping
 

@@ -83,6 +83,11 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
     address = "{{getv "/https/address" ""}}:{{getv "/https/port" "443"}}"
     compress = {{getv "/https/compress" "true"}}
       [entryPoints.https.tls]
+        [[entryPoints.https.tls.certificates]]
+        {{if exists "/https/address/cert"}}
+        certFile = "{{getv "/https/address/cert"}}"
+        keyFile = "{{getv "/https/address/key"}}"
+        {{end}}
 {{end}}{{end -}}
 
 {{if exists "/ping/enable"}}{{if eq (getv "/ping/enable") "true" -}}
