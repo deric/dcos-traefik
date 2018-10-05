@@ -175,3 +175,24 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 
 * `TRAEFIK_STATSD_ADDRESS` Enables sending metrics to StatsD, e.g. `localhost:8125`
 * `TRAEFIK_STATSD_PUSHINTERVAL` Default `10s`
+
+
+## Tracing
+
+* `TRAEFIK_TRACING_BACKEND` Backend name used to send tracing data, either `jaeger` or `zipkin`
+* `TRAEFIK_TRACING_SERVICE` Service name used in tracing backend, default: `traefik`
+* `TRAEFIK_TRACING_SPANLIMIT` Span name limit allows for name truncation in case of very long Frontend/Backend names
+
+### Jaeger
+
+* `TRAEFIK_TRACING_JAEGER_SERVER` Sampling Server URL is the address of jaeger-agent's HTTP sampling server
+* `TRAEFIK_TRACING_JAEGER_SAMPLINGTYPE` Sampling Type specifies the type of the sampler: `const`, `probabilistic`, `rateLimiting`
+* `TRAEFIK_TRACING_JAEGER_SAMPLINGPARAM` Sampling Param is a value passed to the sampler
+* `TRAEFIK_TRACING_JAEGER_AGENTADDRESS` Local Agent Host Port instructs reporter to send spans to jaeger-agent at this address
+
+### Zipkin
+
+* `TRAEFIK_TRACING_ZIPKING_ENDPOINT` Zipking HTTP endpoint used to send data
+* `TRAEFIK_TRACING_ZIPKING_DEBUG` Enable Zipkin debug, default: `false`
+* `TRAEFIK_TRACING_ZIPKING_SAMESPAN` Use ZipKin SameSpan RPC style traces
+* `TRAEFIK_TRACING_ZIPKING_ID128` Use ZipKin 128 bit root span IDs

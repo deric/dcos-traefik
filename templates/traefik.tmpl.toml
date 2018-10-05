@@ -685,3 +685,84 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
   filename = "{{getv "/k8s/filename"}}"
   {{end -}}
 {{end}}{{end -}}
+
+
+{{- if exists "/tracing/backend"}}
+[tracing]
+  # Backend name used to send tracing data
+  #
+  # Default: "jaeger"
+  #
+  backend = "{{getv "/tracing/backend"}}"
+
+  # Service name used in tracing backend
+  #
+  # Default: "traefik"
+  #
+  serviceName = "{{getv "/tracing/service" "traefik"}}"
+
+  # Span name limit allows for name truncation in case of very long Frontend/Backend names
+  # This can prevent certain tracing providers to drop traces that exceed their length limits
+  #
+  # Default: 0 - no truncation will occur
+  #
+  spanNameLimit = {{getv "/tracing/spanlimit" "0"}}
+
+  {{if eq (getv "/tracing/backend") "jaeger" -}}
+  [tracing.jaeger]
+    # Sampling Server URL is the address of jaeger-agent's HTTP sampling server
+    #
+    # Default: "http://localhost:5778/sampling"
+    #
+    samplingServerURL = "{{getv "/tracing/jaeger/server" "http://localhost:5778/sampling"}}"
+
+    # Sampling Type specifies the type of the sampler: const, probabilistic, rateLimiting
+    #
+    # Default: "const"
+    #
+    samplingType = "{{getv "/tracing/jaeger/samplingtype" "const"}}"
+
+    # Sampling Param is a value passed to the sampler.
+    # Valid values for Param field are:
+    #   - for "const" sampler, 0 or 1 for always false/true respectively
+    #   - for "probabilistic" sampler, a probability between 0 and 1
+    #   - for "rateLimiting" sampler, the number of spans per second
+    #
+    # Default: 1.0
+    #
+    samplingParam = {{getv "/tracing/jaeger/samplingparam" "1.0"}}
+
+    # Local Agent Host Port instructs reporter to send spans to jaeger-agent at this address
+    #
+    # Default: "127.0.0.1:6831"
+    #
+    localAgentHostPort = "{{getv "/tracing/jaeger/agentaddress" "127.0.0.1:6831"}}"
+  {{end -}}
+
+  {{if eq (getv "/tracing/backend") "zipkin" -}}
+  [tracing.zipkin]
+    # Zipking HTTP endpoint used to send data
+    #
+    # Default: "http://localhost:9411/api/v1/spans"
+    #
+    httpEndpoint = "{{getv "/tracing/zipkin/endpoint" "http://localhost:9411/api/v1/spans"}}"
+
+    # Enable Zipkin debug
+    #
+    # Default: false
+    #
+    debug = {{getv "/tracing/zipkin/debug" "false"}}
+
+    # Use ZipKin SameSpan RPC style traces
+    #
+    # Default: false
+    #
+    sameSpan = {{getv "/tracing/zipkin/samespan" "false"}}
+
+    # Use ZipKin 128 bit root span IDs
+    #
+    # Default: true
+    #
+    id128Bit = {{getv "/tracing/zipkin/id128" "true"}}
+  {{end -}}
+{{end -}}

@@ -1,5 +1,10 @@
 # dcos-traefik Changelog
 
+## v1.2.0
+
+  - Fixed https endpoint (added TLS)
+  - Added tracing support
+
 ## v1.1.0
   - Traefik configuration generated from `confd` template
   - Targets Traefik 1.6.x release
