@@ -98,6 +98,8 @@ keys = [
   "/tracing/jaeger/samplingtype",
   "/tracing/jaeger/samplingparam",
   "/tracing/jaeger/agentaddress",
+  "/tracing/jaeger/gen128bit",
+  "/tracing/jaeger/propagation",
   "/tracing/service",
   "/tracing/spanlimit",
   "/tracing/zipkin/endpoint",

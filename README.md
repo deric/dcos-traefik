@@ -189,6 +189,8 @@ Will be enabled when `TRAEFIK_PROMETHEUS_ENTRYPOINT` is set, e.g. to `api`.
 * `TRAEFIK_TRACING_JAEGER_SAMPLINGTYPE` Sampling Type specifies the type of the sampler: `const`, `probabilistic`, `rateLimiting`
 * `TRAEFIK_TRACING_JAEGER_SAMPLINGPARAM` Sampling Param is a value passed to the sampler
 * `TRAEFIK_TRACING_JAEGER_AGENTADDRESS` Local Agent Host Port instructs reporter to send spans to jaeger-agent at this address
+* `TRAEFIK_TRACING_JAEGER_GEN128BIT` Generate 128-bit trace IDs, compatible with OpenCensus
+* `TRAEFIK_TRACING_JAEGER_PROPAGATION` Set the propagation header type. Either `jaeger` or zipkin compatible `b3`.
 
 ### Zipkin
 

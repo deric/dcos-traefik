@@ -737,6 +737,18 @@ graceTimeOut = "{{getv "/grace/timeout" "10s"}}"
     # Default: "127.0.0.1:6831"
     #
     localAgentHostPort = "{{getv "/tracing/jaeger/agentaddress" "127.0.0.1:6831"}}"
+
+    # Generate 128-bit trace IDs, compatible with OpenCensus
+    #
+    # Default: false
+    gen128Bit = "{{getv "/tracing/jaeger/gen128bit" "false"}}"
+
+    # Set the propagation header type. This can be either:
+    #   - "jaeger", jaeger's default trace header.
+    #   - "b3", compatible with OpenZipkin
+    #
+    # Default: "jaeger"
+    propagation = "{{getv "/tracing/jaeger/propagation" "jaeger"}}"
   {{end -}}
 
   {{if eq (getv "/tracing/backend") "zipkin" -}}
